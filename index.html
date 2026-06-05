@@ -175,9 +175,12 @@ body.dark #profile-sheet{background:#0f1a14}
 body.dark .pb{background:#2a3a2e}
 
 /* ── Profile sheet ── */
-#profile-modal{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:300;display:flex;align-items:flex-end;justify-content:center}
-#profile-modal.hide{display:none}
+/* profile modal uses .modal class */
 #profile-sheet{background:var(--sand);border-radius:var(--r) var(--r) 0 0;padding:22px 18px;padding-bottom:max(22px,var(--sab));width:100%;max-width:430px;max-height:85vh;overflow-y:auto}
+
+/* ── Modal overlay ── */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:300;display:none;align-items:flex-end;justify-content:center}
+.modal.open{display:flex}
 
 /* ── Toast ── */
 #toast{position:fixed;top:max(16px,calc(var(--sat) + 8px));left:50%;transform:translateX(-50%);background:var(--forest);color:var(--white);padding:10px 20px;border-radius:var(--rx);font-size:13px;z-index:999;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap}
@@ -414,7 +417,7 @@ body.dark .pb{background:#2a3a2e}
 </div>
 
 <!-- ══ PROFILE MODAL ══ -->
-<div id="profile-modal" class="hide" onclick="if(event.target===this)closeProfile()">
+<div id="profile-modal" class="modal" onclick="if(event.target===this)closeProfile()">
   <div id="profile-sheet">
     <div class="row" style="justify-content:space-between;margin-bottom:18px">
       <h2 style="font-family:var(--ff-serif);font-size:20px">Your profile</h2>
@@ -451,7 +454,7 @@ body.dark .pb{background:#2a3a2e}
 </div>
 
 <!-- ══ NEW TRIP MODAL ══ -->
-<div id="trip-modal" style="position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:300;display:flex;align-items:flex-end;justify-content:center" class="hide" onclick="if(event.target===this)closeNewTrip()">
+<div id="trip-modal" class="modal" onclick="if(event.target===this)closeNewTrip()">
   <div style="background:var(--sand);border-radius:var(--r) var(--r) 0 0;padding:22px 18px;padding-bottom:max(22px,var(--sab));width:100%;max-width:430px;max-height:90vh;overflow-y:auto">
     <h2 style="font-family:var(--ff-serif);font-size:20px;margin-bottom:16px">Plan a new trip</h2>
     <label class="form-label">Trip name</label>
@@ -484,7 +487,7 @@ body.dark .pb{background:#2a3a2e}
 </div>
 
 <!-- ══ ADD EXPENSE MODAL ══ -->
-<div id="exp-modal" style="position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:300;display:flex;align-items:flex-end;justify-content:center" class="hide" onclick="if(event.target===this)closeAddExpense()">
+<div id="exp-modal" class="modal" onclick="if(event.target===this)closeAddExpense()">
   <div style="background:var(--sand);border-radius:var(--r) var(--r) 0 0;padding:22px 18px;padding-bottom:max(22px,var(--sab));width:100%;max-width:430px">
     <h2 style="font-family:var(--ff-serif);font-size:20px;margin-bottom:16px">Add expense</h2>
     <label class="form-label">Description</label>
@@ -511,7 +514,7 @@ body.dark .pb{background:#2a3a2e}
 </div>
 
 <!-- ══ DESTINATION DETAIL MODAL ══ -->
-<div id="dest-modal" style="position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:300;display:flex;align-items:flex-end;justify-content:center" class="hide" onclick="if(event.target===this)closeDestModal()">
+<div id="dest-modal" class="modal" onclick="if(event.target===this)closeDestModal()">
   <div style="background:var(--sand);border-radius:var(--r) var(--r) 0 0;width:100%;max-width:430px;max-height:92vh;overflow-y:auto">
     <div id="dest-detail-img" style="height:220px;display:flex;align-items:center;justify-content:center;font-size:80px;position:relative;flex-shrink:0">
       <button onclick="closeDestModal()" style="position:absolute;top:12px;left:12px;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,0.4);border:none;color:var(--white);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px"><i class="ti ti-x"></i></button>
@@ -756,10 +759,10 @@ function openDest(id){
       <p style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px">${k.replace(/_/g,' ')}</p>
       <p style="font-size:13px;font-weight:500;color:var(--text1)">${v}</p>
     </div>`).join('');
-  document.getElementById('dest-modal').classList.remove('hide');
+  document.getElementById('dest-modal').classList.add('open');
 }
 
-function closeDestModal(){document.getElementById('dest-modal').classList.add('hide')}
+function closeDestModal(){document.getElementById('dest-modal').classList.remove('open')}
 
 function planThisDestination(){
   closeDestModal();
@@ -893,8 +896,8 @@ function renderTrips(){
   }).join('');
 }
 
-function showNewTrip(){document.getElementById('trip-modal').classList.remove('hide')}
-function closeNewTrip(){document.getElementById('trip-modal').classList.add('hide')}
+function showNewTrip(){document.getElementById('trip-modal').classList.add('open')}
+function closeNewTrip(){document.getElementById('trip-modal').classList.remove('open')}
 
 function createTrip(){
   const name=document.getElementById('nt-name').value.trim();
@@ -1087,8 +1090,8 @@ async function getBudgetInsight(trip,spent,total,cats){
   }catch(e){}
 }
 
-function showAddExpense(){document.getElementById('exp-modal').classList.remove('hide')}
-function closeAddExpense(){document.getElementById('exp-modal').classList.add('hide')}
+function showAddExpense(){document.getElementById('exp-modal').classList.add('open')}
+function closeAddExpense(){document.getElementById('exp-modal').classList.remove('open')}
 
 function addExpense(){
   const desc=document.getElementById('exp-desc').value.trim();
@@ -1121,9 +1124,9 @@ function openProfile(){
   const isDark=document.body.classList.contains('dark');
   const btn=document.getElementById('dark-btn');
   if(btn)btn.innerHTML=isDark?'<i class="ti ti-sun" style="font-size:14px"></i> Light':'<i class="ti ti-moon" style="font-size:14px"></i> Dark';
-  document.getElementById('profile-modal').classList.remove('hide');
+  document.getElementById('profile-modal').classList.add('open');
 }
-function closeProfile(){document.getElementById('profile-modal').classList.add('hide')}
+function closeProfile(){document.getElementById('profile-modal').classList.remove('open')}
 
 function saveProfile(){
   const name=document.getElementById('edit-name').value.trim();
