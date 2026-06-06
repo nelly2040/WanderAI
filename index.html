@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-<meta name="theme-color" content="#1e5038"/>
+<meta name="theme-color" content="#1a5c3a"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
@@ -11,492 +11,434 @@
 <title>WanderAI – AI Travel Planner</title>
 <link rel="manifest" href="./manifest.json"/>
 <link rel="apple-touch-icon" href="./icons/icon-192.png"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
-  --forest:#1e5038;--forest-l:#2d7a54;--forest-d:#0a1a12;
-  --gold:#c9a84c;--gold-l:#e8c96a;--gold-d:#8a6a20;
-  --sand:#f5f0e8;--sand2:#ede5d4;--sand3:#d4c9b0;
-  --text1:#1a1208;--text2:#4a3f2a;--text3:#7a7060;--text4:#a8a090;
-  --white:#ffffff;--error:#c0392b;
-  --nav-h:64px;
-  --r:16px;--rs:10px;--rx:8px;
+  --forest:#1a5c3a;--fl:#2d8a58;--fd:#0d3d24;--fxl:#e8f5ee;
+  --gold:#b8860b;--gl:#d4a017;--gd:#8a6010;--gbg:#fdf6e3;
+  --sand:#f9f6f0;--s2:#f0ebe0;--s3:#e0d8c8;--s4:#c8bda8;
+  --t1:#1a1208;--t2:#3d3520;--t3:#7a7060;--t4:#b0a890;
+  --white:#ffffff;--err:#c0392b;
+  --nav:62px;--r:14px;--rs:10px;--rx:8px;
   --ff:'DM Sans',system-ui,sans-serif;
-  --ff-serif:'Playfair Display',Georgia,serif;
+  --ffs:'Playfair Display',Georgia,serif;
   --sat:env(safe-area-inset-top,0px);
   --sab:env(safe-area-inset-bottom,0px);
 }
-html,body{height:100%;height:100dvh;overflow:hidden;background:var(--forest-d)}
-body{font-family:var(--ff);color:var(--text1);position:relative}
+html,body{height:100%;height:100dvh;overflow:hidden;background:#0d3d24;font-family:var(--ff);color:var(--t1)}
+#shell{max-width:430px;margin:0 auto;height:100dvh;display:flex;flex-direction:column;overflow:hidden;background:var(--sand);padding-top:var(--sat)}
 
-/* ── Auth ── */
-#auth{position:fixed;inset:0;background:linear-gradient(160deg,#0a1a12 0%,#1e5038 60%,#2d7a54 100%);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;padding-top:max(32px,var(--sat))}
-#auth.hide{display:none}
-.auth-logo{font-family:var(--ff-serif);font-size:42px;color:var(--gold-l);letter-spacing:-1px;margin-bottom:4px}
-.auth-tag{font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:40px;letter-spacing:0.05em}
-.auth-card{background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);border:0.5px solid rgba(255,255,255,0.15);border-radius:var(--r);padding:24px;width:100%}
-.auth-tabs{display:flex;background:rgba(0,0,0,0.2);border-radius:var(--rx);padding:3px;gap:3px;margin-bottom:20px}
-.auth-tab{flex:1;padding:8px;border:none;border-radius:6px;background:transparent;font-family:var(--ff);font-size:13px;font-weight:500;cursor:pointer;color:rgba(255,255,255,0.5);transition:all 0.2s}
-.auth-tab.on{background:var(--forest-l);color:var(--white)}
-.fi{width:100%;padding:11px 14px;border-radius:var(--rx);border:0.5px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.06);font-family:var(--ff);font-size:15px;color:var(--white);outline:none;margin-bottom:12px;transition:border-color 0.2s}
-.fi::placeholder{color:rgba(255,255,255,0.3)}
-.fi:focus{border-color:var(--gold)}
-.fi-label{font-size:11px;color:rgba(255,255,255,0.5);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:5px;display:block}
-.auth-btn{width:100%;padding:13px;border-radius:var(--rx);border:none;background:linear-gradient(135deg,var(--gold),var(--gold-d));color:var(--forest-d);font-family:var(--ff);font-size:15px;font-weight:600;cursor:pointer;margin-top:4px;letter-spacing:0.02em}
-.auth-btn:active{opacity:0.85}
-.auth-err{font-size:12px;color:#ff8a8a;margin-top:10px;text-align:center;min-height:16px}
-.auth-note{font-size:11px;color:rgba(255,255,255,0.3);text-align:center;margin-top:20px}
+/* ── AUTH ── */
+#auth{position:fixed;inset:0;max-width:430px;margin:0 auto;background:linear-gradient(170deg,#061a0e 0%,#1a5c3a 55%,#2d8a58 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;padding-top:max(32px,var(--sat));z-index:200}
+#auth.gone{display:none}
+.alo{font-family:var(--ffs);font-size:46px;font-weight:700;color:var(--gl);letter-spacing:-1px;margin-bottom:4px}
+.asub{font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.18em;text-transform:uppercase;margin-bottom:38px}
+.acard{background:rgba(255,255,255,.08);border:0.5px solid rgba(255,255,255,.18);border-radius:var(--r);padding:22px;width:100%}
+.atabs{display:flex;background:rgba(0,0,0,.3);border-radius:6px;padding:3px;gap:3px;margin-bottom:18px}
+.atab{flex:1;padding:8px;border:none;border-radius:4px;background:transparent;font-family:var(--ff);font-size:13px;font-weight:500;cursor:pointer;color:rgba(255,255,255,.4);transition:all .2s}
+.atab.on{background:var(--fl);color:#fff}
+.af{width:100%;padding:11px 13px;border-radius:var(--rx);border:0.5px solid rgba(255,255,255,.18);background:rgba(255,255,255,.07);font-family:var(--ff);font-size:14px;color:#fff;outline:none;margin-bottom:11px;transition:border-color .2s}
+.af::placeholder{color:rgba(255,255,255,.28)}
+.af:focus{border-color:var(--gl)}
+.al{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;display:block}
+.abtn{width:100%;padding:13px;border-radius:var(--rx);border:none;background:linear-gradient(135deg,var(--gl),var(--gd));color:#fff;font-family:var(--ff);font-size:14px;font-weight:600;cursor:pointer;letter-spacing:.02em;transition:opacity .15s}
+.abtn:active{opacity:.85}
+.aerr{font-size:12px;color:#ff9090;margin-top:8px;text-align:center;min-height:16px}
+.anote{font-size:11px;color:rgba(255,255,255,.22);text-align:center;margin-top:16px}
 
-/* ── App Shell ── */
-#app{
-  position:fixed;
-  top:env(safe-area-inset-top,0px);
-  left:0;right:0;bottom:0;
-  background:var(--sand);
-  max-width:430px;
-  margin:0 auto;
-  display:flex;
-  flex-direction:column;
-  overflow:hidden;
-}
-#app.hide{display:none}
+/* ── APP SHELL ── */
 .screen{display:none;flex-direction:column;overflow:hidden;min-height:0}
 .screen.active{display:flex;flex:1}
 .scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;min-height:0}
 .scroll::-webkit-scrollbar{display:none}
 
-/* ── Nav ── */
-.nav{
-  height:calc(var(--nav-h) + env(safe-area-inset-bottom,0px));
-  padding-bottom:env(safe-area-inset-bottom,0px);
-  background:var(--white);
-  border-top:0.5px solid var(--sand3);
-  display:flex;
-  align-items:stretch;
-  flex-shrink:0;
-  z-index:50;
-}
-.nb{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:none;border:none;cursor:pointer;color:var(--text4);font-size:9px;font-family:var(--ff);font-weight:500;padding:4px 2px;touch-action:manipulation;user-select:none;transition:color 0.2s;min-width:0}
+/* ── NAV ── */
+.nav{height:calc(var(--nav) + var(--sab));padding-bottom:var(--sab);background:var(--white);border-top:0.5px solid var(--s3);display:flex;align-items:stretch;flex-shrink:0;z-index:50}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:none;border:none;cursor:pointer;color:var(--t4);font-size:9px;font-family:var(--ff);font-weight:500;padding:4px 2px;touch-action:manipulation;transition:color .2s;min-width:0;user-select:none}
 .nb i{font-size:20px}
+.nb span{font-size:9px;white-space:nowrap}
 .nb.on{color:var(--forest)}
-.nb-center{position:relative}
-.nb-fab{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--forest-l),var(--forest));display:flex;align-items:center;justify-content:center;margin-top:-14px;box-shadow:0 4px 16px rgba(30,80,56,0.4)}
-.nb-fab i{font-size:22px;color:var(--white)}
+.nb-mid{position:relative;overflow:visible}
+.fab{width:48px;height:48px;border-radius:50%;background:linear-gradient(145deg,var(--fl),var(--forest));display:flex;align-items:center;justify-content:center;margin-top:-14px;box-shadow:0 4px 18px rgba(26,92,58,.4);transition:transform .15s}
+.fab i{font-size:22px;color:#fff}
+.nb-mid:active .fab{transform:scale(.93)}
+.nb-mid.on .fab{background:var(--fd)}
+.nb-mid span{color:var(--forest);font-weight:600}
 
-/* ── Cards & UI ── */
-.card{background:var(--white);border-radius:var(--r);padding:16px;margin:0 14px 12px;border:0.5px solid var(--sand3)}
-.card-dark{background:var(--forest);border-radius:var(--r);padding:16px;margin:0 14px 12px}
-.pill{display:inline-flex;align-items:center;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:500}
-.pill-forest{background:#e8f5ee;color:#0d4028}
-.pill-gold{background:#fdf3dc;color:#7a5010}
-.pill-red{background:#fde8e8;color:#8b0000}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 16px;border-radius:var(--rx);border:0.5px solid var(--sand3);cursor:pointer;font-family:var(--ff);font-size:13px;font-weight:500;background:var(--white);color:var(--text2);transition:all 0.15s;touch-action:manipulation}
-.btn:active{opacity:0.8}
-.btn-forest{background:var(--forest);color:var(--white);border:none}
-.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-d));color:var(--forest-d);border:none;font-weight:600}
-.btn-outline{background:transparent;border:1px solid var(--forest);color:var(--forest)}
-.pb{height:6px;background:var(--sand2);border-radius:3px;overflow:hidden}
-.pf{height:100%;background:var(--forest);border-radius:3px;transition:width 0.4s}
-.row{display:flex;align-items:center}
-.gap8{gap:8px}.gap10{gap:10px}.gap12{gap:12px}
-.slabel{padding:12px 16px 4px;font-size:10px;font-weight:500;color:var(--text3);letter-spacing:0.08em;text-transform:uppercase}
+/* ── TOPBAR ── */
+.tb{padding:14px 16px 10px;background:var(--white);border-bottom:0.5px solid var(--s3);flex-shrink:0}
+.tb h1{font-family:var(--ffs);font-size:23px;font-weight:700;color:var(--t1)}
+.tb p{font-size:12px;color:var(--t3);margin-top:2px}
 
-/* ── Topbar ── */
-.topbar{padding:14px 16px 10px;background:var(--white);border-bottom:0.5px solid var(--sand3);flex-shrink:0}
-.topbar h1{font-family:var(--ff-serif);font-size:24px;font-weight:600;color:var(--text1)}
-.topbar p{font-size:12px;color:var(--text3);margin-top:2px}
+/* ── CARDS ── */
+.card{background:var(--white);border-radius:var(--r);padding:14px 16px;margin:0 14px 10px;border:0.5px solid var(--s3)}
+.pill{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500}
+.pg{background:#e8f5ee;color:#0d3d24}
+.pgold{background:var(--gbg);color:#5a3d00}
+.pblue{background:#e8f0fb;color:#0d2860}
+.pred{background:#fdeaea;color:#7a0000}
 
-/* ── Chat / AI ── */
-.chat-wrap{display:flex;flex-direction:column;flex:1;overflow:hidden;min-height:0;height:0}
-.chat-head{padding:14px 16px;border-bottom:0.5px solid var(--sand3);flex-shrink:0;background:var(--white);display:flex;align-items:center;gap:12px}
-.chat-area{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;scrollbar-width:none;min-height:0}
-.chat-area::-webkit-scrollbar{display:none}
-.msg{max-width:84%;padding:11px 14px;border-radius:18px;font-size:14px;line-height:1.55}
-.msg-ai{background:var(--white);border:0.5px solid var(--sand3);align-self:flex-start;border-bottom-left-radius:4px;color:var(--text1)}
-.msg-user{background:var(--forest);color:var(--white);align-self:flex-end;border-bottom-right-radius:4px}
-.chat-bar{padding:10px 14px;padding-bottom:max(10px,env(safe-area-inset-bottom,0px));background:var(--white);border-top:0.5px solid var(--sand3);display:flex;gap:8px;flex-shrink:0}
-.chat-inp{flex:1;padding:10px 14px;border-radius:22px;border:0.5px solid var(--sand3);background:var(--sand);font-family:var(--ff);font-size:14px;outline:none;color:var(--text1)}
-.chat-inp:focus{border-color:var(--forest)}
-.send{width:42px;height:42px;border-radius:50%;background:var(--forest);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--white);font-size:16px;flex-shrink:0;touch-action:manipulation}
-.chip{padding:7px 14px;border-radius:20px;border:1px solid var(--sand3);background:var(--white);font-family:var(--ff);font-size:12px;font-weight:500;color:var(--text2);cursor:pointer;white-space:nowrap;touch-action:manipulation}
-.chip:active{background:var(--sand2)}
-.chips-row{display:flex;gap:8px;padding:0 14px 12px;overflow-x:auto;scrollbar-width:none;flex-shrink:0}
-.chips-row::-webkit-scrollbar{display:none}
-.tdot{width:6px;height:6px;border-radius:50%;background:var(--text3);display:inline-block;animation:bop 1.1s infinite}
+/* ── DESTINATION CARDS ── */
+.dc{border-radius:var(--r);overflow:hidden;margin:0 14px 12px;position:relative;cursor:pointer;border:0.5px solid var(--s3);transition:transform .15s}
+.dc:active{transform:scale(.98)}
+.dc-img{width:100%;height:195px;display:flex;align-items:center;justify-content:center;font-size:74px;position:relative;overflow:hidden}
+.dc-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.75) 0%,rgba(0,0,0,.05) 55%,transparent 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:14px}
+.dc-name{font-family:var(--ffs);font-size:22px;font-weight:700;color:#fff;letter-spacing:-.3px}
+.dc-sub{font-size:12px;color:rgba(255,255,255,.72);margin-top:2px}
+.dc-price{position:absolute;top:10px;right:10px;background:rgba(212,160,23,.95);backdrop-filter:blur(4px);color:#fff;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700}
+.dc-badge{position:absolute;top:10px;left:10px;background:rgba(0,0,0,.42);backdrop-filter:blur(4px);color:rgba(255,255,255,.88);padding:3px 9px;border-radius:20px;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+
+/* ── DESTINATION DETAIL ── */
+.ddpanel{position:fixed;inset:0;max-width:430px;margin:0 auto;background:var(--sand);z-index:100;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .32s cubic-bezier(.4,0,.2,1)}
+.ddpanel.open{transform:translateY(0)}
+.dd-img{height:250px;display:flex;align-items:center;justify-content:center;font-size:90px;position:relative;flex-shrink:0}
+.dd-back{position:absolute;top:max(14px,var(--sat));left:14px;width:38px;height:38px;border-radius:50%;background:rgba(0,0,0,.38);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:18px;border:none;touch-action:manipulation}
+.dd-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:18px 16px 24px;scrollbar-width:none}
+.dd-scroll::-webkit-scrollbar{display:none}
+.stat-box{background:var(--s2);border-radius:var(--rs);padding:10px 12px}
+.sl{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:.1em;text-transform:uppercase;display:block;padding:12px 16px 4px}
+
+/* ── TRIPS ── */
+.tc{background:var(--white);border-radius:var(--r);padding:14px 16px;margin:0 14px 10px;border:0.5px solid var(--s3);cursor:pointer;transition:background .15s}
+.tc:active{background:var(--s2)}
+.pb{height:5px;background:var(--s2);border-radius:3px;overflow:hidden;margin:8px 0 6px}
+.pf{height:100%;background:var(--forest);border-radius:3px;transition:width .4s}
+
+/* ── BUDGET ── */
+.bh{background:linear-gradient(145deg,#0a2018,#1a5c3a);border-radius:var(--r);padding:18px;margin:14px 14px 10px}
+.er{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--s2)}
+.er:last-child{border-bottom:none}
+.catdot{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+
+/* ── CHAT ── */
+.ca{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:8px;scrollbar-width:none;min-height:0}
+.ca::-webkit-scrollbar{display:none}
+.msg{max-width:84%;padding:10px 13px;border-radius:16px;font-size:14px;line-height:1.55}
+.mai{background:var(--white);border:0.5px solid var(--s3);align-self:flex-start;border-bottom-left-radius:4px;color:var(--t1)}
+.mme{background:var(--forest);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.cbar{padding:9px 12px;padding-bottom:max(9px,var(--sab));background:var(--white);border-top:0.5px solid var(--s3);display:flex;gap:7px;flex-shrink:0}
+.cinp{flex:1;padding:10px 14px;border-radius:22px;border:0.5px solid var(--s3);background:var(--s2);font-family:var(--ff);font-size:14px;outline:none;color:var(--t1);transition:border-color .2s}
+.cinp:focus{border-color:var(--forest)}
+.sbtn{width:42px;height:42px;border-radius:50%;background:var(--forest);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;flex-shrink:0;touch-action:manipulation;transition:opacity .15s}
+.sbtn:active{opacity:.8}
+.chip{padding:7px 13px;border-radius:18px;border:0.5px solid var(--s3);background:var(--white);font-family:var(--ff);font-size:12px;color:var(--t2);cursor:pointer;white-space:nowrap;touch-action:manipulation;transition:background .15s}
+.chip:active{background:var(--s2)}
+.chips{display:flex;gap:7px;padding:0 14px 10px;overflow-x:auto;scrollbar-width:none;flex-shrink:0}
+.chips::-webkit-scrollbar{display:none}
+.tdot{width:5px;height:5px;border-radius:50%;background:var(--t3);display:inline-block;animation:bop 1.1s infinite}
 .tdot:nth-child(2){animation-delay:.18s}
 .tdot:nth-child(3){animation-delay:.36s}
-@keyframes bop{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+@keyframes bop{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
 
-/* ── Form inputs ── */
-.form-input{width:100%;padding:11px 14px;border-radius:var(--rx);border:0.5px solid var(--sand3);background:var(--white);font-family:var(--ff);font-size:14px;outline:none;color:var(--text1);transition:border-color 0.2s;margin-bottom:12px}
-.form-input:focus{border-color:var(--forest)}
-.form-label{font-size:11px;color:var(--text3);font-weight:500;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:5px;display:block}
-select.form-input{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%237a7060' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+/* ── FORMS ── */
+.fi{width:100%;padding:11px 13px;border-radius:var(--rx);border:0.5px solid var(--s3);background:var(--white);font-family:var(--ff);font-size:14px;outline:none;color:var(--t1);transition:border-color .2s;margin-bottom:11px}
+.fi:focus{border-color:var(--forest)}
+.fl{font-size:10px;color:var(--t3);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;display:block}
+select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24'%3E%3Cpath fill='%237a7060' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 16px;border-radius:var(--rx);border:0.5px solid var(--s3);cursor:pointer;font-family:var(--ff);font-size:13px;font-weight:500;background:var(--white);color:var(--t2);touch-action:manipulation;transition:opacity .15s}
+.btn:active{opacity:.8}
+.bf{background:var(--forest);color:#fff;border:none}
+.bg{background:linear-gradient(135deg,var(--gl),var(--gd));color:#fff;border:none;font-weight:600}
+.bo{background:transparent;border:1.5px solid var(--forest);color:var(--forest)}
 
-/* ── Destination cards ── */
-.dest-card{border-radius:var(--r);overflow:hidden;margin:0 14px 14px;position:relative;cursor:pointer}
-.dest-img{width:100%;height:200px;object-fit:cover;display:block;background:linear-gradient(135deg,var(--forest),var(--forest-l))}
-.dest-img-placeholder{width:100%;height:200px;display:flex;align-items:center;justify-content:center;font-size:60px}
-.dest-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.75) 0%,transparent 60%);display:flex;flex-direction:column;justify-content:flex-end;padding:16px}
-.dest-name{font-family:var(--ff-serif);font-size:22px;color:var(--white);font-weight:600}
-.dest-sub{font-size:12px;color:rgba(255,255,255,0.75);margin-top:3px}
-.dest-price{position:absolute;top:12px;right:12px;background:var(--gold);color:var(--forest-d);padding:5px 10px;border-radius:20px;font-size:12px;font-weight:600}
-
-/* ── Trip cards ── */
-.trip-card{background:var(--white);border-radius:var(--r);padding:14px 16px;margin:0 14px 10px;border:0.5px solid var(--sand3);cursor:pointer}
-.trip-card:active{background:var(--sand)}
-
-/* ── Budget ── */
-.budget-cat{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:0.5px solid var(--sand2)}
-.budget-cat:last-child{border-bottom:none}
-.cat-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-
-/* ── Companion ── */
-.companion-card{border-radius:var(--r);padding:14px 16px;margin:0 14px 10px;border:0.5px solid var(--sand3)}
-.companion-alert{background:linear-gradient(135deg,#fff8e1,#fff3cd);border:1px solid #f0c040}
-.companion-info{background:var(--white)}
-
-/* ── Dark mode ── */
-body.dark{--sand:#0f1a14;--sand2:#1a2a1e;--sand3:#2a3a2e;--text1:#e8f5ee;--text2:#b0c4b8;--text3:#7a9882;--text4:#4a6050;--white:#1a2a1e}
-body.dark .nav,body.dark .topbar,body.dark .chat-head,body.dark .chat-bar{background:#1a2a1e;border-color:#2a3a2e}
-body.dark .card{background:#1a2a1e;border-color:#2a3a2e}
-body.dark .form-input,body.dark .chat-inp{background:#0f1a14;border-color:#2a3a2e;color:#e8f5ee}
-body.dark .msg-ai{background:#1a2a1e;border-color:#2a3a2e}
-body.dark .btn:not(.btn-forest):not(.btn-gold):not(.btn-outline){background:#1a2a1e;border-color:#2a3a2e;color:#b0c4b8}
-body.dark .chip{background:#1a2a1e;border-color:#2a3a2e;color:#b0c4b8}
-body.dark .trip-card{background:#1a2a1e;border-color:#2a3a2e}
-body.dark .budget-cat{border-color:#2a3a2e}
-body.dark .companion-info{background:#1a2a1e}
-body.dark #profile-sheet{background:#0f1a14}
-body.dark .pb{background:#2a3a2e}
-
-/* ── Profile sheet ── */
-/* profile modal uses .modal class */
-#profile-sheet{background:var(--sand);border-radius:var(--r) var(--r) 0 0;padding:22px 18px;padding-bottom:max(22px,var(--sab));width:100%;max-width:430px;max-height:85vh;overflow-y:auto}
-
-/* ── Modal overlay ── */
-.modal{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:300;display:none;align-items:flex-end;justify-content:center}
+/* ── MODALS ── */
+.modal{position:fixed;inset:0;max-width:430px;margin:0 auto;background:rgba(0,0,0,.5);z-index:150;display:none;flex-direction:column;justify-content:flex-end}
 .modal.open{display:flex}
+.msheet{background:var(--sand);border-radius:14px 14px 0 0;max-height:92%;overflow-y:auto;scrollbar-width:none;padding:20px 16px;padding-bottom:max(24px,var(--sab))}
+.msheet::-webkit-scrollbar{display:none}
+.msheet h2{font-family:var(--ffs);font-size:20px;font-weight:700;color:var(--t1);margin-bottom:16px}
 
-/* ── Toast ── */
-#toast{position:fixed;top:max(16px,calc(var(--sat) + 8px));left:50%;transform:translateX(-50%);background:var(--forest);color:var(--white);padding:10px 20px;border-radius:var(--rx);font-size:13px;z-index:999;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap}
+/* ── COMPANION ── */
+.co{border-radius:var(--r);padding:13px 15px;margin:0 14px 10px;border:0.5px solid var(--s3)}
+.co-alert{background:#fffbeb;border-color:#e6c229}
+.co-info{background:var(--white)}
+.co-dark{background:linear-gradient(145deg,#0a2018,#1a5c3a);border:none}
+
+/* ── TOAST ── */
+#toast{position:fixed;top:max(14px,calc(var(--sat) + 8px));left:50%;transform:translateX(-50%);background:rgba(10,30,18,.92);backdrop-filter:blur(8px);color:#fff;padding:10px 20px;border-radius:var(--rx);font-size:13px;z-index:500;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap;border:0.5px solid rgba(255,255,255,.12)}
 #toast.show{opacity:1}
 
-/* ── Install banner ── */
-#install-banner{position:fixed;bottom:calc(var(--nav-h) + var(--sab) + 8px);left:12px;right:12px;max-width:406px;margin:0 auto;background:var(--forest-d);color:var(--white);border-radius:var(--rs);padding:12px 14px;display:flex;align-items:center;gap:10px;z-index:200;border:0.5px solid rgba(255,255,255,0.15)}
-#install-banner.hide{display:none}
-#install-banner p{flex:1;font-size:12px;line-height:1.4}
-#install-banner button{padding:7px 12px;border-radius:6px;border:1px solid rgba(255,255,255,0.3);background:transparent;color:var(--white);font-family:var(--ff);font-size:11px;cursor:pointer}
-.ib-do{background:var(--gold)!important;color:var(--forest-d)!important;border:none!important;font-weight:600!important;margin-left:4px}
+/* ── DARK MODE ── */
+body.dark{--sand:#0a1a0e;--s2:#121e14;--s3:#1e2e20;--s4:#2a3c2c;--t1:#e8f5ee;--t2:#b0c8b0;--t3:#7a9882;--t4:#4a6050;--white:#121e14}
+body.dark .nav{background:#0d2018;border-color:#1e2e20}
+body.dark .tb,body.dark .cbar{background:#0d2018;border-color:#1e2e20}
+body.dark .card{background:#121e14;border-color:#1e2e20}
+body.dark .tc{background:#121e14;border-color:#1e2e20}
+body.dark .tc:active{background:#1e2e20}
+body.dark .modal,body.dark .ddpanel{background:var(--sand)}
+body.dark .msheet{background:#0a1a0e}
+body.dark .mai{background:#121e14;border-color:#1e2e20}
+body.dark .cinp{background:#0a1a0e;border-color:#1e2e20;color:var(--t1)}
+body.dark .fi{background:#0a1a0e;border-color:#1e2e20;color:var(--t1)}
+body.dark .fi:focus{border-color:var(--forest)}
+body.dark .chip,.dark .btn:not(.bf):not(.bg):not(.bo){background:#121e14;border-color:#1e2e20;color:var(--t2)}
+body.dark .dc{border-color:#1e2e20}
+body.dark .co-info{background:#121e14}
+body.dark .stat-box{background:#1e2e20}
+body.dark .pb{background:#1e2e20}
+body.dark .co-alert{background:#1a1800;border-color:#3a3000}
+body.dark #shell{background:var(--sand)}
 
-/* ── Mobile responsive ── */
+/* ── MOBILE ── */
 @media(max-width:390px){
-  :root{--nav-h:58px}
-  .nb i{font-size:18px}
-  .nb{font-size:8px}
-  .dest-img,.dest-img-placeholder{height:170px}
-  .topbar h1{font-size:21px}
+  :root{--nav:58px}
+  .dc-img{height:175px}
+  .fab{width:44px;height:44px}
+  .tb h1{font-size:21px}
+  .alo{font-size:40px}
 }
 </style>
 </head>
 <body>
+<div id="shell">
 
 <!-- ══ AUTH ══ -->
 <div id="auth">
-  <div class="auth-logo">WanderAI</div>
-  <p class="auth-tag">YOUR AI TRAVEL COMPANION</p>
-  <div class="auth-card">
-    <div class="auth-tabs">
-      <button class="auth-tab on" id="tab-si" onclick="authTab('si')">Sign in</button>
-      <button class="auth-tab" id="tab-su" onclick="authTab('su')">Sign up</button>
+  <div class="alo">WanderAI</div>
+  <p class="asub">Your AI Travel Companion</p>
+  <div class="acard">
+    <div class="atabs">
+      <button class="atab on" id="tsi" onclick="atab('si')">Sign in</button>
+      <button class="atab" id="tsu" onclick="atab('su')">Sign up</button>
     </div>
-    <div id="form-si">
-      <label class="fi-label">Email</label>
-      <input class="fi" id="si-email" type="email" placeholder="you@example.com" autocomplete="email"/>
-      <label class="fi-label">Password</label>
-      <input class="fi" id="si-pw" type="password" placeholder="••••••••" autocomplete="current-password"/>
-      <button class="auth-btn" onclick="doSignIn()">Sign in</button>
-      <p class="auth-err" id="si-err"></p>
+    <div id="fsi">
+      <label class="al">Email</label>
+      <input class="af" id="si-e" type="email" placeholder="you@example.com" autocomplete="email"/>
+      <label class="al">Password</label>
+      <input class="af" id="si-p" type="password" placeholder="••••••••" autocomplete="current-password"/>
+      <button class="abtn" onclick="doSI()">Sign in</button>
+      <p class="aerr" id="si-err"></p>
     </div>
-    <div id="form-su" style="display:none">
-      <label class="fi-label">Your name</label>
-      <input class="fi" id="su-name" type="text" placeholder="Alex" autocomplete="given-name"/>
-      <label class="fi-label">Email</label>
-      <input class="fi" id="su-email" type="email" placeholder="you@example.com" autocomplete="email"/>
-      <label class="fi-label">Password</label>
-      <input class="fi" id="su-pw" type="password" placeholder="Min 6 characters" autocomplete="new-password"/>
-      <button class="auth-btn" onclick="doSignUp()">Create account</button>
-      <p class="auth-err" id="su-err"></p>
+    <div id="fsu" style="display:none">
+      <label class="al">Your name</label>
+      <input class="af" id="su-n" type="text" placeholder="Alex" autocomplete="given-name"/>
+      <label class="al">Email</label>
+      <input class="af" id="su-e" type="email" placeholder="you@example.com" autocomplete="email"/>
+      <label class="al">Password</label>
+      <input class="af" id="su-p" type="password" placeholder="Min 6 characters" autocomplete="new-password"/>
+      <button class="abtn" onclick="doSU()">Create account</button>
+      <p class="aerr" id="su-err"></p>
     </div>
   </div>
-  <p class="auth-note">All data stored securely on your device</p>
+  <p class="anote">All data stored locally on your device</p>
 </div>
 
-<!-- ══ APP ══ -->
-<div id="app" class="hide">
+<!-- ══ SCREENS ══ -->
 
-  <!-- HOME / DISCOVER -->
-  <div class="screen active" id="s-home">
-    <div style="padding:16px 16px 10px;background:var(--white);border-bottom:0.5px solid var(--sand3);flex-shrink:0">
-      <div class="row" style="justify-content:space-between;align-items:flex-start">
-        <div>
-          <p style="font-size:11px;color:var(--text3);letter-spacing:0.05em">WELCOME BACK</p>
-          <h1 id="home-name" style="font-family:var(--ff-serif);font-size:24px;font-weight:600;color:var(--text1)">Traveller</h1>
-        </div>
-        <div id="home-avatar" onclick="openProfile()" style="width:42px;height:42px;border-radius:50%;background:var(--forest);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:500;color:var(--white);cursor:pointer;flex-shrink:0"></div>
-      </div>
-      <div style="margin-top:14px;position:relative">
-        <input id="dest-search" class="form-input" style="margin-bottom:0;padding-left:40px;border-radius:22px" placeholder="Search destinations..." oninput="filterDestinations(this.value)"/>
-        <i class="ti ti-search" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:16px"></i>
-      </div>
-    </div>
-    <div class="scroll">
-      <div style="padding:14px 16px 8px;display:flex;align-items:center;justify-content:space-between">
-        <h2 style="font-family:var(--ff-serif);font-size:18px;font-weight:600">Trending destinations</h2>
-        <span style="font-size:11px;color:var(--forest);font-weight:500">2026 prices</span>
-      </div>
-      <div id="dest-list"></div>
-      <div style="height:12px"></div>
-    </div>
-  </div>
-
-  <!-- AI PLANNER -->
-  <div class="screen" id="s-plan">
-    <div class="chat-head" style="flex-shrink:0">
-      <div style="width:40px;height:40px;border-radius:50%;background:var(--forest);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-        <i class="ti ti-robot" style="font-size:18px;color:var(--gold-l)"></i>
-      </div>
-      <div style="flex:1">
-        <p style="font-size:15px;font-weight:500;font-family:var(--ff-serif)">WanderAI Planner</p>
-        <p style="font-size:11px;color:var(--forest)">● AI-powered · Groq Llama 3.3</p>
-      </div>
-      <button class="btn" style="font-size:11px;padding:5px 10px" onclick="clearChat()">Clear</button>
-    </div>
-    <div class="chat-area" id="chat-area" style="flex:1;min-height:0;overflow-y:auto"></div>
-    <div class="chips-row" id="plan-chips" style="flex-shrink:0">
-      <button class="chip" onclick="qp('Plan a 7-day budget trip to Bali for 2 people under $1500')">Bali 7 days</button>
-      <button class="chip" onclick="qp('Best 5-day Paris itinerary for a couple, romantic focus')">Paris romance</button>
-      <button class="chip" onclick="qp('Safari itinerary Kenya 10 days with budget breakdown')">Kenya safari</button>
-      <button class="chip" onclick="qp('Solo backpacking Southeast Asia 3 weeks budget $800')">SEA backpack</button>
-      <button class="chip" onclick="qp('Family trip Dubai 5 days with kids activities and costs')">Dubai family</button>
-      <button class="chip" onclick="qp('New York City 4 days highlights first time visitor')">NYC first time</button>
-    </div>
-    <div class="chat-bar">
-      <input class="chat-inp" id="chat-inp" placeholder="Ask me to plan your trip…" autocomplete="off" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg()}"/>
-      <button class="send" onclick="sendMsg()"><i class="ti ti-send"></i></button>
-    </div>
-  </div>
-
-  <!-- TRIPS -->
-  <div class="screen" id="s-trips">
-    <div class="topbar">
-      <div class="row" style="justify-content:space-between">
-        <div><h1>My trips</h1><p id="trips-count">0 trips planned</p></div>
-        <button class="btn btn-forest" style="font-size:12px;padding:8px 14px" onclick="showNewTrip()"><i class="ti ti-plus"></i> New trip</button>
-      </div>
-    </div>
-    <div class="scroll" id="trips-scroll">
-      <div id="trips-list"></div>
-      <div style="height:8px"></div>
-    </div>
-  </div>
-
-  <!-- COMPANION -->
-  <div class="screen" id="s-companion">
-    <div class="topbar" style="flex-shrink:0"><h1>Travel companion</h1><p>Real-time help wherever you are</p></div>
-    <div class="scroll">
-      <!-- Active trip status -->
-      <div class="card" style="background:linear-gradient(135deg,var(--forest),var(--forest-l));border:none;margin-top:14px">
-        <div class="row gap12" style="margin-bottom:12px">
-          <i class="ti ti-map-pin" style="font-size:22px;color:var(--gold-l)"></i>
-          <div><p style="font-size:14px;font-weight:500;color:var(--white)">Current destination</p><p style="font-size:12px;color:rgba(255,255,255,0.7)" id="comp-dest">Set in your active trip</p></div>
-        </div>
-        <div style="display:flex;gap:8px">
-          <button class="btn" style="flex:1;font-size:12px;background:rgba(255,255,255,0.15);color:var(--white);border-color:rgba(255,255,255,0.2)" onclick="getWeather()"><i class="ti ti-cloud"></i> Weather</button>
-          <button class="btn" style="flex:1;font-size:12px;background:rgba(255,255,255,0.15);color:var(--white);border-color:rgba(255,255,255,0.2)" onclick="getSafety()"><i class="ti ti-shield"></i> Safety</button>
-          <button class="btn" style="flex:1;font-size:12px;background:rgba(255,255,255,0.15);color:var(--white);border-color:rgba(255,255,255,0.2)" onclick="getLocalTips()"><i class="ti ti-bulb"></i> Tips</button>
-        </div>
-      </div>
-
-      <!-- Quick alerts -->
-      <div class="slabel">ALERTS & INFO</div>
-      <div id="companion-cards">
-        <div class="companion-card companion-alert">
-          <div class="row gap10" style="margin-bottom:6px"><i class="ti ti-currency-dollar" style="font-size:18px;color:#b8860b"></i><p style="font-size:14px;font-weight:500">Currency tips</p></div>
-          <p style="font-size:13px;color:var(--text2)">Ask the AI for live exchange rate guidance and tipping customs at your destination.</p>
-        </div>
-      </div>
-
-      <!-- AI companion chat -->
-      <div class="slabel">ASK YOUR COMPANION</div>
-      <div class="card" style="padding:0;overflow:hidden">
-        <div id="comp-chat" style="padding:12px;max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;scrollbar-width:none"></div>
-        <div style="padding:10px 12px;border-top:0.5px solid var(--sand3);display:flex;gap:8px">
-          <input class="chat-inp" id="comp-inp" placeholder="Ask anything about your destination…" onkeydown="if(event.key==='Enter')sendCompMsg()"/>
-          <button class="send" onclick="sendCompMsg()"><i class="ti ti-send"></i></button>
-        </div>
-      </div>
-
-      <!-- Language -->
-      <div class="slabel">LANGUAGE HELP</div>
-      <div class="card">
-        <p style="font-size:14px;font-weight:500;margin-bottom:10px">Common phrases</p>
-        <div style="display:flex;gap:6px;flex-wrap:wrap" id="phrase-btns">
-          <button class="btn btn-outline" style="font-size:12px;padding:7px 12px" onclick="getPhrase('hello')">Hello</button>
-          <button class="btn btn-outline" style="font-size:12px;padding:7px 12px" onclick="getPhrase('thank you')">Thank you</button>
-          <button class="btn btn-outline" style="font-size:12px;padding:7px 12px" onclick="getPhrase('where is the bathroom')">Bathroom</button>
-          <button class="btn btn-outline" style="font-size:12px;padding:7px 12px" onclick="getPhrase('how much does this cost')">How much?</button>
-          <button class="btn btn-outline" style="font-size:12px;padding:7px 12px" onclick="getPhrase('help me')">Help!</button>
-        </div>
-      </div>
-      <div style="height:8px"></div>
-    </div>
-  </div>
-
-  <!-- BUDGET -->
-  <div class="screen" id="s-budget">
-    <div class="topbar">
-      <div class="row" style="justify-content:space-between">
-        <div><h1>Budget tracker</h1><p id="budget-trip-name">Select a trip to track</p></div>
-        <button class="btn btn-gold" style="font-size:12px;padding:8px 14px" onclick="showAddExpense()"><i class="ti ti-plus"></i> Add</button>
-      </div>
-    </div>
-    <div class="scroll">
-      <!-- Summary -->
-      <div class="card" style="margin-top:14px;background:linear-gradient(135deg,#1a3a24,#2d5a3c);border:none">
-        <div class="row" style="justify-content:space-between;margin-bottom:14px">
-          <div><p style="font-size:12px;color:rgba(255,255,255,0.6)">TOTAL BUDGET</p><p id="bud-total" style="font-size:28px;font-weight:300;color:var(--white);font-family:var(--ff-serif)">$0</p></div>
-          <div style="text-align:right"><p style="font-size:12px;color:rgba(255,255,255,0.6)">SPENT</p><p id="bud-spent" style="font-size:28px;font-weight:300;color:var(--gold-l);font-family:var(--ff-serif)">$0</p></div>
-        </div>
-        <div style="background:rgba(255,255,255,0.15);height:6px;border-radius:3px;overflow:hidden">
-          <div id="bud-bar" style="height:100%;background:var(--gold);border-radius:3px;width:0%;transition:width 0.4s"></div>
-        </div>
-        <div class="row" style="justify-content:space-between;margin-top:8px">
-          <p style="font-size:11px;color:rgba(255,255,255,0.5)" id="bud-pct">0% used</p>
-          <p style="font-size:11px;color:rgba(255,255,255,0.5)" id="bud-remain">$0 remaining</p>
-        </div>
-      </div>
-
-      <!-- Category breakdown -->
-      <div class="slabel">BY CATEGORY</div>
-      <div class="card" id="bud-cats" style="padding:8px 16px"></div>
-
-      <!-- Recent expenses -->
-      <div class="slabel">RECENT EXPENSES</div>
-      <div class="card" id="bud-list" style="padding:8px 16px">
-        <p style="text-align:center;color:var(--text3);padding:16px;font-size:13px">No expenses yet. Add your first!</p>
-      </div>
-
-      <!-- AI insight -->
-      <div class="slabel">AI BUDGET INSIGHT</div>
-      <div class="card" style="border-left:3px solid var(--gold)">
-        <div class="row gap8" style="align-items:flex-start">
-          <i class="ti ti-sparkles" style="font-size:18px;color:var(--gold);flex-shrink:0"></i>
-          <p style="font-size:13px;color:var(--text2);line-height:1.6" id="budget-insight">Add expenses to get personalised AI spending insights.</p>
-        </div>
-      </div>
-      <div style="height:8px"></div>
-    </div>
-  </div>
-
-  <!-- NAV -->
-  <nav class="nav">
-    <button class="nb on" onclick="sw('home',this)"><i class="ti ti-compass"></i><span>Discover</span></button>
-    <button class="nb" onclick="sw('plan',this)"><i class="ti ti-robot"></i><span>Planner</span></button>
-    <button class="nb nb-center" onclick="sw('trips',this)">
-      <div class="nb-fab"><i class="ti ti-map-2"></i></div>
-      <span style="color:var(--forest);font-weight:600">Trips</span>
-    </button>
-    <button class="nb" onclick="sw('companion',this)"><i class="ti ti-headset"></i><span>Companion</span></button>
-    <button class="nb" onclick="sw('budget',this)"><i class="ti ti-wallet"></i><span>Budget</span></button>
-  </nav>
-</div>
-
-<!-- ══ PROFILE MODAL ══ -->
-<div id="profile-modal" class="modal" onclick="if(event.target===this)closeProfile()">
-  <div id="profile-sheet">
-    <div class="row" style="justify-content:space-between;margin-bottom:18px">
-      <h2 style="font-family:var(--ff-serif);font-size:20px">Your profile</h2>
-      <button onclick="toggleDark()" id="dark-btn" style="display:flex;align-items:center;gap:5px;padding:7px 12px;border-radius:20px;border:0.5px solid var(--sand3);background:var(--sand2);font-family:var(--ff);font-size:12px;font-weight:500;cursor:pointer;color:var(--text2)">
-        <i class="ti ti-moon" style="font-size:14px"></i> Dark
-      </button>
-    </div>
-    <div class="row gap12" style="margin-bottom:18px">
-      <div id="prof-avatar" style="width:52px;height:52px;border-radius:50%;background:var(--forest);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:500;color:var(--white);flex-shrink:0"></div>
-      <div><p id="prof-name" style="font-size:17px;font-weight:500"></p><p id="prof-email" style="font-size:13px;color:var(--text3)"></p></div>
-    </div>
-    <div style="background:var(--white);border-radius:var(--rs);border:0.5px solid var(--sand3);overflow:hidden;margin-bottom:14px">
-      <div style="padding:14px 16px;border-bottom:0.5px solid var(--sand2)">
-        <label class="form-label">Display name</label>
-        <input class="form-input" id="edit-name" style="margin-bottom:0" placeholder="Your name"/>
-      </div>
-      <div style="padding:14px 16px">
-        <label class="form-label">Home currency</label>
-        <select class="form-input" id="edit-currency" style="margin-bottom:0">
-          <option value="USD">USD – US Dollar</option>
-          <option value="EUR">EUR – Euro</option>
-          <option value="GBP">GBP – British Pound</option>
-          <option value="KES">KES – Kenyan Shilling</option>
-          <option value="JPY">JPY – Japanese Yen</option>
-          <option value="AUD">AUD – Australian Dollar</option>
-          <option value="CAD">CAD – Canadian Dollar</option>
-          <option value="ZAR">ZAR – South African Rand</option>
-        </select>
-      </div>
-    </div>
-    <button class="btn btn-forest" style="width:100%;padding:12px;font-size:14px;margin-bottom:10px" onclick="saveProfile()">Save changes</button>
-    <button class="btn" style="width:100%;padding:11px;font-size:13px;color:var(--error);border-color:#f0a0a0" onclick="doSignOut()"><i class="ti ti-logout"></i> Sign out</button>
-  </div>
-</div>
-
-<!-- ══ NEW TRIP MODAL ══ -->
-<div id="trip-modal" class="modal" onclick="if(event.target===this)closeNewTrip()">
-  <div style="background:var(--sand);border-radius:var(--r) var(--r) 0 0;padding:22px 18px;padding-bottom:max(22px,var(--sab));width:100%;max-width:430px;max-height:90vh;overflow-y:auto">
-    <h2 style="font-family:var(--ff-serif);font-size:20px;margin-bottom:16px">Plan a new trip</h2>
-    <label class="form-label">Trip name</label>
-    <input class="form-input" id="nt-name" placeholder="e.g. Bali Summer 2026"/>
-    <label class="form-label">Destination</label>
-    <input class="form-input" id="nt-dest" placeholder="e.g. Bali, Indonesia"/>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-      <div><label class="form-label">Start date</label><input class="form-input" id="nt-start" type="date"/></div>
-      <div><label class="form-label">End date</label><input class="form-input" id="nt-end" type="date"/></div>
-    </div>
-    <label class="form-label">Total budget ($)</label>
-    <input class="form-input" id="nt-budget" type="number" placeholder="1500"/>
-    <label class="form-label">Travel style</label>
-    <select class="form-input" id="nt-style">
-      <option>🎒 Budget backpacker</option>
-      <option>⚖️ Mid-range comfort</option>
-      <option>✨ Luxury traveller</option>
-      <option>👨‍👩‍👧 Family trip</option>
-      <option>💑 Romantic getaway</option>
-      <option>🏔️ Adventure seeker</option>
-    </select>
-    <label class="form-label">Number of travellers</label>
-    <select class="form-input" id="nt-pax">
-      <option>1 – Solo</option><option>2 – Couple</option><option>3 – Small group</option>
-      <option>4-6 – Group</option><option>7+ – Large group</option>
-    </select>
-    <button class="btn btn-gold" style="width:100%;padding:13px;font-size:15px" onclick="createTrip()"><i class="ti ti-check"></i> Create trip</button>
-    <p id="nt-err" style="font-size:12px;color:var(--error);text-align:center;margin-top:8px;min-height:16px"></p>
-  </div>
-</div>
-
-<!-- ══ ADD EXPENSE MODAL ══ -->
-<div id="exp-modal" class="modal" onclick="if(event.target===this)closeAddExpense()">
-  <div style="background:var(--sand);border-radius:var(--r) var(--r) 0 0;padding:22px 18px;padding-bottom:max(22px,var(--sab));width:100%;max-width:430px">
-    <h2 style="font-family:var(--ff-serif);font-size:20px;margin-bottom:16px">Add expense</h2>
-    <label class="form-label">Description</label>
-    <input class="form-input" id="exp-desc" placeholder="e.g. Hotel night"/>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-      <div><label class="form-label">Amount ($)</label><input class="form-input" id="exp-amount" type="number" placeholder="0"/></div>
+<!-- DISCOVER -->
+<div class="screen active" id="s-home">
+  <div style="padding:14px 16px 10px;background:var(--white);border-bottom:0.5px solid var(--s3);flex-shrink:0">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
       <div>
-        <label class="form-label">Category</label>
-        <select class="form-input" id="exp-cat">
+        <p style="font-size:10px;color:var(--t3);letter-spacing:.08em;text-transform:uppercase;font-weight:600">Welcome back</p>
+        <h1 id="hname" style="font-family:var(--ffs);font-size:26px;font-weight:700;color:var(--t1)">Traveller</h1>
+      </div>
+      <div id="hav" onclick="openProf()" style="width:44px;height:44px;border-radius:50%;background:linear-gradient(145deg,var(--fl),var(--forest));display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#fff;cursor:pointer;flex-shrink:0;box-shadow:0 2px 10px rgba(26,92,58,.3)"></div>
+    </div>
+    <div style="position:relative;margin-bottom:10px">
+      <input id="dsearch" style="width:100%;padding:10px 13px 10px 40px;border-radius:22px;border:0.5px solid var(--s3);background:var(--s2);font-family:var(--ff);font-size:14px;outline:none;color:var(--t1)" placeholder="Search destinations..." oninput="filterD(this.value)"/>
+      <i class="ti ti-search" style="position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--t3);font-size:16px;pointer-events:none"></i>
+    </div>
+    <div style="display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px">
+      <button class="chip" id="cat-all" data-cat="all" onclick="setCat('all',this)" style="background:var(--forest);color:#fff;border-color:var(--forest)">All</button>
+      <button class="chip" id="cat-beach" data-cat="beach" onclick="setCat('beach',this)">🏖 Beach</button>
+      <button class="chip" id="cat-culture" data-cat="culture" onclick="setCat('culture',this)">🏛 Culture</button>
+      <button class="chip" id="cat-adventure" data-cat="adventure" onclick="setCat('adventure',this)">🧗 Adventure</button>
+      <button class="chip" id="cat-luxury" data-cat="luxury" onclick="setCat('luxury',this)">✨ Luxury</button>
+      <button class="chip" id="cat-city" data-cat="city" onclick="setCat('city',this)">🌆 City</button>
+    </div>
+  </div>
+  <div class="scroll">
+    <div style="padding:10px 16px 6px;display:flex;justify-content:space-between;align-items:center">
+      <span id="dcnt" style="font-size:12px;color:var(--t3);font-weight:500">31 destinations</span>
+      <span style="font-size:11px;color:var(--forest);font-weight:600;background:var(--fxl);padding:3px 9px;border-radius:20px">2026 prices</span>
+    </div>
+    <div id="dlist"></div>
+    <div style="height:10px"></div>
+  </div>
+  <!-- Destination detail panel -->
+  <div class="ddpanel" id="ddp">
+    <div class="dd-img" id="ddimg">
+      <button class="dd-back" onclick="closeDd()"><i class="ti ti-arrow-left"></i></button>
+    </div>
+    <div class="dd-scroll">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+        <div style="flex:1;min-width:0">
+          <h2 id="dd-n" style="font-family:var(--ffs);font-size:26px;font-weight:700;color:var(--t1)"></h2>
+          <p id="dd-c" style="font-size:13px;color:var(--t3);margin-top:2px"></p>
+        </div>
+        <span id="dd-p" class="pill pgold" style="font-size:13px;font-weight:700;flex-shrink:0;margin-top:4px;margin-left:10px"></span>
+      </div>
+      <p id="dd-d" style="font-size:14px;color:var(--t2);line-height:1.65;margin-bottom:14px"></p>
+      <div id="dd-t" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px"></div>
+      <div id="dd-s" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:16px"></div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button class="btn bg" style="width:100%;padding:13px;font-size:14px" onclick="planFromDd()"><i class="ti ti-sparkles"></i> Plan this trip with AI</button>
+        <button class="btn bo" style="width:100%;padding:12px;font-size:13px" onclick="addFromDd()"><i class="ti ti-plus"></i> Add to my trips</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AI PLANNER -->
+<div class="screen" id="s-plan">
+  <div style="padding:12px 14px;background:var(--white);border-bottom:0.5px solid var(--s3);flex-shrink:0;display:flex;align-items:center;gap:10px">
+    <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(145deg,var(--fl),var(--forest));display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(26,92,58,.3)">
+      <i class="ti ti-robot" style="font-size:18px;color:var(--gl)"></i>
+    </div>
+    <div style="flex:1">
+      <p style="font-size:15px;font-weight:600;font-family:var(--ffs)">WanderAI Planner</p>
+      <p style="font-size:11px;color:var(--forest);font-weight:500">Powered by Groq · Llama 3.3</p>
+    </div>
+    <button class="btn" style="font-size:11px;padding:5px 10px" onclick="clearChat()">Clear</button>
+  </div>
+  <div class="ca" id="ca"></div>
+  <div class="chips" id="pchips">
+    <button class="chip" onclick="qp('Plan a 7-day trip to Bali for 2 people, budget $1500 total. Day-by-day itinerary with 2026 prices')">Bali 7 days</button>
+    <button class="chip" onclick="qp('5-day romantic Paris itinerary for a couple. Include hotels and restaurants with 2026 prices')">Paris romance</button>
+    <button class="chip" onclick="qp('10-day Kenya safari itinerary with full 2026 budget breakdown')">Kenya safari</button>
+    <button class="chip" onclick="qp('Southeast Asia 3-week solo backpacking route on $800')">SEA backpack</button>
+    <button class="chip" onclick="qp('Dubai 5-day family trip with kids, 2026 costs')">Dubai family</button>
+    <button class="chip" onclick="qp('Complete 7-day Tokyo guide for first-time visitor, 2026 prices')">Tokyo guide</button>
+  </div>
+  <div class="cbar">
+    <input class="cinp" id="cinp" placeholder="Ask me to plan your trip…" autocomplete="off" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();send()}"/>
+    <button class="sbtn" onclick="send()"><i class="ti ti-send"></i></button>
+  </div>
+</div>
+
+<!-- TRIPS -->
+<div class="screen" id="s-trips">
+  <div class="tb">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start">
+      <div><h1>My trips</h1><p id="tcnt">0 trips planned</p></div>
+      <button class="btn bf" style="font-size:12px;padding:8px 14px" onclick="openNT()"><i class="ti ti-plus"></i> New trip</button>
+    </div>
+  </div>
+  <div class="scroll"><div id="tlist"></div><div style="height:10px"></div></div>
+</div>
+
+<!-- COMPANION -->
+<div class="screen" id="s-comp">
+  <div class="tb" style="flex-shrink:0"><h1>Travel Companion</h1><p>Real-time help wherever you are</p></div>
+  <div class="scroll">
+    <div class="co co-dark" style="margin-top:12px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <i class="ti ti-map-pin" style="font-size:22px;color:var(--gl)"></i>
+        <div><p style="font-size:14px;font-weight:600;color:#fff">Current destination</p><p id="cdest" style="font-size:12px;color:rgba(255,255,255,.6)">Set an active trip</p></div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button onclick="getW()" style="flex:1;padding:9px;border-radius:var(--rx);border:0.5px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:#fff;font-family:var(--ff);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px"><i class="ti ti-cloud" style="font-size:14px"></i>Weather</button>
+        <button onclick="getSf()" style="flex:1;padding:9px;border-radius:var(--rx);border:0.5px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:#fff;font-family:var(--ff);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px"><i class="ti ti-shield" style="font-size:14px"></i>Safety</button>
+        <button onclick="getTp()" style="flex:1;padding:9px;border-radius:var(--rx);border:0.5px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:#fff;font-family:var(--ff);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px"><i class="ti ti-bulb" style="font-size:14px"></i>Tips</button>
+      </div>
+    </div>
+    <span class="sl">ASK YOUR COMPANION</span>
+    <div class="card" style="padding:0;overflow:hidden">
+      <div id="coc" style="padding:10px 12px;max-height:190px;overflow-y:auto;display:flex;flex-direction:column;gap:7px;scrollbar-width:none"></div>
+      <div style="padding:8px 10px;border-top:0.5px solid var(--s3);display:flex;gap:7px">
+        <input class="cinp" id="copinp" style="font-size:13px" placeholder="Ask anything about your destination…" onkeydown="if(event.key==='Enter')sendCo()"/>
+        <button class="sbtn" style="width:38px;height:38px" onclick="sendCo()"><i class="ti ti-send"></i></button>
+      </div>
+    </div>
+    <span class="sl">COMMON PHRASES</span>
+    <div class="card">
+      <div style="display:flex;flex-wrap:wrap;gap:7px">
+        <button class="btn bo" style="font-size:12px;padding:7px 12px" onclick="ph('hello')">Hello</button>
+        <button class="btn bo" style="font-size:12px;padding:7px 12px" onclick="ph('thank you')">Thank you</button>
+        <button class="btn bo" style="font-size:12px;padding:7px 12px" onclick="ph('how much does this cost')">How much?</button>
+        <button class="btn bo" style="font-size:12px;padding:7px 12px" onclick="ph('where is the bathroom')">Bathroom</button>
+        <button class="btn bo" style="font-size:12px;padding:7px 12px" onclick="ph('help me I need assistance')">Help!</button>
+      </div>
+    </div>
+    <span class="sl">TRAVEL ALERTS</span>
+    <div class="co co-alert" style="margin:0 14px 10px">
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:5px"><i class="ti ti-currency-dollar" style="font-size:17px;color:#8a6010"></i><p style="font-size:13px;font-weight:600;color:#4a3400">Currency & tipping</p></div>
+      <p style="font-size:12px;color:#5a4200;line-height:1.5">Ask your companion for live exchange guidance and local tipping customs at your destination.</p>
+    </div>
+    <div style="height:10px"></div>
+  </div>
+</div>
+
+<!-- BUDGET -->
+<div class="screen" id="s-bud">
+  <div class="tb">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start">
+      <div><h1>Budget</h1><p id="btn-n" style="font-size:12px;color:var(--t3);margin-top:2px">Select a trip</p></div>
+      <button class="btn bg" style="font-size:12px;padding:8px 14px" onclick="openExp()"><i class="ti ti-plus"></i> Add</button>
+    </div>
+  </div>
+  <div class="scroll">
+    <div class="bh">
+      <div style="display:flex;justify-content:space-between;margin-bottom:14px">
+        <div><p style="font-size:10px;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.08em;font-weight:600">Total budget</p><p id="bht" style="font-family:var(--ffs);font-size:32px;font-weight:400;color:#fff">$0</p></div>
+        <div style="text-align:right"><p style="font-size:10px;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.08em;font-weight:600">Spent</p><p id="bhs" style="font-family:var(--ffs);font-size:32px;font-weight:400;color:var(--gl)">$0</p></div>
+      </div>
+      <div style="background:rgba(255,255,255,.15);height:5px;border-radius:3px;overflow:hidden"><div id="bhb" style="height:100%;background:var(--gl);border-radius:3px;width:0%;transition:width .4s"></div></div>
+      <div style="display:flex;justify-content:space-between;margin-top:7px">
+        <p id="bhp" style="font-size:11px;color:rgba(255,255,255,.4)">0% used</p>
+        <p id="bhr" style="font-size:11px;color:rgba(255,255,255,.4)">$0 remaining</p>
+      </div>
+    </div>
+    <span class="sl">BY CATEGORY</span>
+    <div class="card" id="bcats" style="padding:8px 16px"></div>
+    <span class="sl">RECENT EXPENSES</span>
+    <div class="card" id="blist" style="padding:8px 16px"></div>
+    <span class="sl">AI INSIGHT</span>
+    <div class="card" style="border-left:3px solid var(--gl);border-radius:0 var(--r) var(--r) 0">
+      <div style="display:flex;gap:8px;align-items:flex-start">
+        <i class="ti ti-sparkles" style="font-size:17px;color:var(--gl);flex-shrink:0;margin-top:1px"></i>
+        <p id="bins" style="font-size:13px;color:var(--t2);line-height:1.6">Add expenses to get AI spending insights.</p>
+      </div>
+    </div>
+    <div style="height:10px"></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <button class="nb on" onclick="sw('home',this)"><i class="ti ti-compass"></i><span>Discover</span></button>
+  <button class="nb" onclick="sw('plan',this)"><i class="ti ti-robot"></i><span>Planner</span></button>
+  <button class="nb nb-mid" onclick="sw('trips',this)"><div class="fab"><i class="ti ti-map-2"></i></div><span>Trips</span></button>
+  <button class="nb" onclick="sw('comp',this)"><i class="ti ti-headset"></i><span>Companion</span></button>
+  <button class="nb" onclick="sw('bud',this)"><i class="ti ti-wallet"></i><span>Budget</span></button>
+</nav>
+
+<!-- NEW TRIP MODAL -->
+<div class="modal" id="m-nt" onclick="if(event.target===this)closeNT()">
+  <div class="msheet">
+    <h2>Plan a new trip ✈️</h2>
+    <label class="fl">Trip name</label><input class="fi" id="nt-n" placeholder="e.g. Bali Summer 2026"/>
+    <label class="fl">Destination</label><input class="fi" id="nt-d" placeholder="e.g. Bali, Indonesia"/>
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
+      <div><label class="fl">Start date</label><input class="fi" id="nt-s" type="date"/></div>
+      <div><label class="fl">End date</label><input class="fi" id="nt-e" type="date"/></div>
+    </div>
+    <label class="fl">Total budget ($)</label><input class="fi" id="nt-b" type="number" placeholder="1500"/>
+    <label class="fl">Travel style</label>
+    <select class="fi" id="nt-st">
+      <option>🎒 Budget backpacker</option><option>⚖️ Mid-range comfort</option>
+      <option>✨ Luxury traveller</option><option>👨‍👩‍👧 Family trip</option>
+      <option>💑 Romantic getaway</option><option>🏔️ Adventure seeker</option>
+    </select>
+    <button class="btn bg" style="width:100%;padding:13px;font-size:14px;margin-top:4px" onclick="createTrip()"><i class="ti ti-check"></i> Create trip</button>
+    <p id="nterr" style="font-size:12px;color:var(--err);text-align:center;margin-top:8px;min-height:16px"></p>
+  </div>
+</div>
+
+<!-- ADD EXPENSE MODAL -->
+<div class="modal" id="m-exp" onclick="if(event.target===this)closeExp()">
+  <div class="msheet">
+    <h2>Add expense 💰</h2>
+    <label class="fl">Description</label><input class="fi" id="ex-d" placeholder="e.g. Hotel night in Ubud"/>
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
+      <div><label class="fl">Amount ($)</label><input class="fi" id="ex-a" type="number" placeholder="0"/></div>
+      <div><label class="fl">Category</label>
+        <select class="fi" id="ex-c">
           <option value="accommodation">🏨 Accommodation</option>
           <option value="food">🍽️ Food & Drinks</option>
           <option value="transport">✈️ Transport</option>
@@ -507,699 +449,447 @@ body.dark .pb{background:#2a3a2e}
         </select>
       </div>
     </div>
-    <label class="form-label">Trip</label>
-    <select class="form-input" id="exp-trip"></select>
-    <button class="btn btn-forest" style="width:100%;padding:13px;font-size:14px" onclick="addExpense()"><i class="ti ti-plus"></i> Add expense</button>
+    <label class="fl">Trip</label><select class="fi" id="ex-t"></select>
+    <button class="btn bf" style="width:100%;padding:13px;font-size:14px" onclick="addExp()"><i class="ti ti-plus"></i> Add expense</button>
   </div>
 </div>
 
-<!-- ══ DESTINATION DETAIL MODAL ══ -->
-<div id="dest-modal" class="modal" onclick="if(event.target===this)closeDestModal()">
-  <div style="background:var(--sand);border-radius:var(--r) var(--r) 0 0;width:100%;max-width:430px;max-height:92vh;overflow-y:auto">
-    <div id="dest-detail-img" style="height:220px;display:flex;align-items:center;justify-content:center;font-size:80px;position:relative;flex-shrink:0">
-      <button onclick="closeDestModal()" style="position:absolute;top:12px;left:12px;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,0.4);border:none;color:var(--white);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px"><i class="ti ti-x"></i></button>
+<!-- PROFILE MODAL -->
+<div class="modal" id="m-prof" onclick="if(event.target===this)closeProf()">
+  <div class="msheet">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <h2 style="margin-bottom:0">Your profile</h2>
+      <button id="dbtn" onclick="toggleDark()" style="display:flex;align-items:center;gap:5px;padding:7px 12px;border-radius:20px;border:0.5px solid var(--s3);background:var(--s2);font-family:var(--ff);font-size:12px;font-weight:500;cursor:pointer;color:var(--t2)"><i class="ti ti-moon" style="font-size:13px"></i> Dark</button>
     </div>
-    <div style="padding:18px">
-      <div class="row" style="justify-content:space-between;align-items:flex-start;margin-bottom:12px">
-        <div><h2 id="dd-name" style="font-family:var(--ff-serif);font-size:22px;font-weight:600"></h2><p id="dd-country" style="font-size:13px;color:var(--text3);margin-top:2px"></p></div>
-        <span id="dd-price" class="pill pill-gold" style="font-size:13px;font-weight:600;white-space:nowrap"></span>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+      <div id="pav" style="width:52px;height:52px;border-radius:50%;background:linear-gradient(145deg,var(--fl),var(--forest));display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;color:#fff;flex-shrink:0"></div>
+      <div><p id="pnm" style="font-size:17px;font-weight:600;color:var(--t1)"></p><p id="pem" style="font-size:12px;color:var(--t3)"></p></div>
+    </div>
+    <div style="background:var(--white);border-radius:var(--rs);border:0.5px solid var(--s3);overflow:hidden;margin-bottom:12px">
+      <div style="padding:13px 14px;border-bottom:0.5px solid var(--s2)">
+        <label class="fl">Display name</label><input class="fi" id="e-n" style="margin-bottom:0" placeholder="Your name"/>
       </div>
-      <p id="dd-desc" style="font-size:14px;color:var(--text2);line-height:1.65;margin-bottom:14px"></p>
-      <div id="dd-highlights" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px"></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px" id="dd-stats"></div>
-      <button class="btn btn-gold" style="width:100%;padding:13px;font-size:14px" onclick="planThisDestination()"><i class="ti ti-sparkles"></i> Plan this trip with AI</button>
-      <button class="btn btn-outline" style="width:100%;padding:12px;font-size:13px;margin-top:8px" onclick="addTripFromDest()"><i class="ti ti-plus"></i> Add to my trips</button>
+      <div style="padding:13px 14px">
+        <label class="fl">Home currency</label>
+        <select class="fi" id="e-c" style="margin-bottom:0">
+          <option value="USD">USD – US Dollar</option><option value="EUR">EUR – Euro</option>
+          <option value="GBP">GBP – British Pound</option><option value="KES">KES – Kenyan Shilling</option>
+          <option value="JPY">JPY – Japanese Yen</option><option value="ZAR">ZAR – South African Rand</option>
+          <option value="AUD">AUD – Australian Dollar</option><option value="CAD">CAD – Canadian Dollar</option>
+        </select>
+      </div>
     </div>
+    <button class="btn bf" style="width:100%;padding:12px;font-size:14px;margin-bottom:8px" onclick="saveProf()">Save changes</button>
+    <button class="btn" style="width:100%;padding:11px;font-size:13px;color:var(--err);border-color:#f0a0a0" onclick="signOut()"><i class="ti ti-logout"></i> Sign out</button>
   </div>
 </div>
 
-<!-- Toast & Install banner -->
 <div id="toast"></div>
-<div id="install-banner" class="hide">
-  <i class="ti ti-download" style="font-size:18px;flex-shrink:0"></i>
-  <p id="ib-text">Install WanderAI on your home screen</p>
-  <button onclick="dismissInstall()">Later</button>
-  <button class="ib-do" onclick="doInstall()">Install</button>
-</div>
 
 <script>
-/* ══════════════════════════════════════════════
-   DESTINATIONS DATA (30+ destinations, 2026 prices)
-══════════════════════════════════════════════ */
-const DESTINATIONS = [
-  {id:'bali',name:'Bali',country:'Indonesia',emoji:'🌴',budget_per_day:55,highlights:['Ubud rice terraces','Tanah Lot temple','Seminyak beach','Mount Batur hike'],desc:'A tropical paradise of emerald rice terraces, sacred temples, surf breaks and vibrant nightlife. Bali offers the perfect blend of adventure, culture and relaxation at incredible value.',best_time:'Apr–Oct',currency:'IDR (Rupiah)',language:'Balinese/Indonesian',visa:'Free 30 days',safety:'Very safe',stats:{flight_from_uk:'£580',hotel_mid:'$35/night',meal:'$4–8',transport:'$5/day'},category:'beach'},
-  {id:'paris',name:'Paris',country:'France',emoji:'🗼',budget_per_day:180,highlights:['Eiffel Tower','Louvre Museum','Montmartre','Seine river cruise'],desc:'The City of Light captivates with world-class art, Michelin-starred cuisine, iconic landmarks and an effortless romantic atmosphere that has inspired artists for centuries.',best_time:'Apr–Jun, Sep–Oct',currency:'EUR (Euro)',language:'French',visa:'Schengen 90 days',safety:'Generally safe',stats:{flight_from_uk:'£120',hotel_mid:'$150/night',meal:'$20–45',transport:'$20/day'},category:'culture'},
-  {id:'tokyo',name:'Tokyo',country:'Japan',emoji:'🗾',budget_per_day:120,highlights:['Shibuya crossing','Tsukiji market','Akihabara','Mount Fuji day trip'],desc:'A dazzling collision of ultra-modern and deeply traditional. Tokyo overwhelms with its precision, kindness, extraordinary food scene and neon-lit urban energy unlike anywhere else.',best_time:'Mar–May, Oct–Nov',currency:'JPY (Yen)',language:'Japanese',visa:'Free 90 days',safety:'Extremely safe',stats:{flight_from_uk:'£650',hotel_mid:'$90/night',meal:'$8–20',transport:'$15/day'},category:'culture'},
-  {id:'nairobi',name:'Nairobi',country:'Kenya',emoji:'🦁',budget_per_day:95,highlights:['Maasai Mara safaris','Nairobi National Park','Karen Blixen Museum','Giraffe Centre'],desc:'East Africa\'s vibrant capital is the gateway to extraordinary wildlife safaris. Watch the Great Migration, meet Maasai communities and experience Africa\'s most dynamic city.',best_time:'Jul–Oct, Jan–Feb',currency:'KES (Shilling)',language:'Swahili/English',visa:'eVisa $51',safety:'Moderate – exercise caution',stats:{flight_from_uk:'£520',hotel_mid:'$70/night',meal:'$6–15',transport:'$10/day'},category:'adventure'},
-  {id:'dubai',name:'Dubai',country:'UAE',emoji:'🏙️',budget_per_day:200,highlights:['Burj Khalifa','Desert safari','Dubai Mall','Palm Jumeirah'],desc:'A city built from ambition and luxury. Dubai stuns with record-breaking architecture, world-class shopping, desert adventures and some of the most extravagant dining on earth.',best_time:'Nov–Mar',currency:'AED (Dirham)',language:'Arabic/English',visa:'Free 30 days for most',safety:'Very safe',stats:{flight_from_uk:'£400',hotel_mid:'$120/night',meal:'$15–50',transport:'$20/day'},category:'luxury'},
-  {id:'nyc',name:'New York City',country:'USA',emoji:'🗽',budget_per_day:220,highlights:['Central Park','Times Square','Metropolitan Museum','Brooklyn Bridge'],desc:'The city that never sleeps pulses with unmatched energy. From Broadway shows to hidden pizza joints, skyscraper views to street art, NYC delivers endless discovery at every turn.',best_time:'Apr–Jun, Sep–Nov',currency:'USD (Dollar)',language:'English',visa:'ESTA $21',safety:'Generally safe',stats:{flight_from_uk:'£380',hotel_mid:'$200/night',meal:'$15–40',transport:'$15/day'},category:'city'},
-  {id:'santorini',name:'Santorini',country:'Greece',emoji:'🏛️',budget_per_day:160,highlights:['Oia sunset','Caldera views','Black sand beaches','Akrotiri ruins'],desc:'Perched on volcanic cliffs above the Aegean, Santorini\'s blue-domed churches, whitewashed villages and legendary sunsets make it one of the most photographed places on Earth.',best_time:'May–Oct',currency:'EUR (Euro)',language:'Greek',visa:'Schengen 90 days',safety:'Very safe',stats:{flight_from_uk:'£250',hotel_mid:'$130/night',meal:'$20–50',transport:'$25/day'},category:'beach'},
-  {id:'machu_picchu',name:'Machu Picchu',country:'Peru',emoji:'🏔️',budget_per_day:85,highlights:['Inca citadel','Sun Gate hike','Aguas Calientes','Sacred Valley'],desc:'The lost city of the Incas emerges from Andean clouds in one of humanity\'s most dramatic archaeological revelations. A journey here changes the way you see human achievement.',best_time:'May–Sep',currency:'PEN (Sol)',language:'Spanish/Quechua',visa:'Free 90–183 days',safety:'Moderate – watch your belongings',stats:{flight_from_uk:'£680',hotel_mid:'$60/night',meal:'$8–20',transport:'$30/day'},category:'adventure'},
-  {id:'maldives',name:'Maldives',country:'Maldives',emoji:'🐠',budget_per_day:350,highlights:['Overwater bungalows','Coral reef diving','Bioluminescent beaches','Whale shark snorkelling'],desc:'Arguably the world\'s most beautiful destination. Crystal-clear lagoons, powder-white sand, colourful coral reefs and ultimate seclusion combine for an unforgettable escape.',best_time:'Nov–Apr',currency:'MVR (Rufiyaa)',language:'Dhivehi/English',visa:'Free 30 days',safety:'Very safe',stats:{flight_from_uk:'£680',hotel_mid:'$400/night',meal:'$30–80',transport:'$40/day'},category:'luxury'},
-  {id:'rome',name:'Rome',country:'Italy',emoji:'🏺',budget_per_day:140,highlights:['Colosseum','Vatican Museums','Trevi Fountain','Trastevere neighbourhood'],desc:'The Eternal City layers 2,800 years of history at every corner. Stumble from ancient ruins to Renaissance masterpieces to impossibly good pasta, all within a few cobbled streets.',best_time:'Apr–Jun, Sep–Oct',currency:'EUR (Euro)',language:'Italian',visa:'Schengen 90 days',safety:'Generally safe',stats:{flight_from_uk:'£100',hotel_mid:'$110/night',meal:'$15–35',transport:'$15/day'},category:'culture'},
-  {id:'cape_town',name:'Cape Town',country:'South Africa',emoji:'🌊',budget_per_day:90,highlights:['Table Mountain','Cape of Good Hope','Boulders Beach penguins','Winelands'],desc:'Where mountains meet the ocean in spectacular fashion. Cape Town offers world-class wine, diverse cuisine, dramatic landscapes and proximity to incredible wildlife.',best_time:'Nov–Feb',currency:'ZAR (Rand)',language:'Afrikaans/English',visa:'Free 90 days for most',safety:'Exercise caution – research areas',stats:{flight_from_uk:'£600',hotel_mid:'$75/night',meal:'$8–20',transport:'$15/day'},category:'adventure'},
-  {id:'thailand',name:'Bangkok & Thailand',country:'Thailand',emoji:'🙏',budget_per_day:50,highlights:['Grand Palace','Floating markets','Phi Phi islands','Chiang Mai temples'],desc:'Thailand seduces with vibrant street food culture, ornate temples, turquoise island waters and legendary nightlife. One of the world\'s greatest value destinations for every style.',best_time:'Nov–Feb',currency:'THB (Baht)',language:'Thai',visa:'Free 60 days',safety:'Generally safe',stats:{flight_from_uk:'£490',hotel_mid:'$30/night',meal:'$3–8',transport:'$5/day'},category:'beach'},
-  {id:'amsterdam',name:'Amsterdam',country:'Netherlands',emoji:'🚲',budget_per_day:145,highlights:['Anne Frank House','Rijksmuseum','Canal cruises','Vondelpark'],desc:'A city built on a web of canals, bicycles and open-minded culture. Amsterdam\'s world-class museums, historic architecture and vibrant food scene make it endlessly rewarding.',best_time:'Apr–Sep',currency:'EUR (Euro)',language:'Dutch/English',visa:'Schengen 90 days',safety:'Very safe',stats:{flight_from_uk:'£80',hotel_mid:'$130/night',meal:'$18–40',transport:'$10/day'},category:'city'},
-  {id:'iceland',name:'Iceland',country:'Iceland',emoji:'🌌',budget_per_day:180,highlights:['Northern Lights','Blue Lagoon','Golden Circle','Glacier hikes'],desc:'Iceland\'s raw volcanic landscapes, geysers, waterfalls and Northern Lights create an otherworldly experience. The land of fire and ice delivers wonder at every turn.',best_time:'Jun–Aug (summer), Sep–Mar (Northern Lights)',currency:'ISK (Króna)',language:'Icelandic/English',visa:'Schengen 90 days',safety:'Safest country in the world',stats:{flight_from_uk:'£180',hotel_mid:'$160/night',meal:'$25–60',transport:'$40/day'},category:'adventure'},
-  {id:'morocco',name:'Marrakech',country:'Morocco',emoji:'🕌',budget_per_day:65,highlights:['Djemaa el-Fna square','Souks & medina','Atlas Mountains','Sahara Desert'],desc:'Marrakech overwhelms the senses with labyrinthine souks, rose-red medina walls, call to prayer, aromatic spice markets and the vast Sahara just hours away.',best_time:'Mar–May, Sep–Nov',currency:'MAD (Dirham)',language:'Arabic/French',visa:'Free 90 days for most',safety:'Generally safe – watch your belongings',stats:{flight_from_uk:'£120',hotel_mid:'$50/night',meal:'$5–15',transport:'$8/day'},category:'culture'},
-  {id:'singapore',name:'Singapore',country:'Singapore',emoji:'🦁',budget_per_day:130,highlights:['Gardens by the Bay','Hawker centres','Sentosa Island','Marina Bay Sands'],desc:'A futuristic city-state where gleaming skyscrapers share space with lush greenery, and the world\'s greatest hawker food culture thrives at every price point.',best_time:'Year-round',currency:'SGD (Dollar)',language:'English/Mandarin',visa:'Free 30–90 days',safety:'One of safest globally',stats:{flight_from_uk:'£580',hotel_mid:'$120/night',meal:'$5–30',transport:'$10/day'},category:'city'},
-  {id:'barcelona',name:'Barcelona',country:'Spain',emoji:'🎨',budget_per_day:120,highlights:['Sagrada Família','Park Güell','La Boqueria','Gothic Quarter'],desc:'Gaudí\'s architectural masterpieces, golden Mediterranean beaches, world-class tapas and a pulsating nightlife make Barcelona one of Europe\'s most bewitching cities.',best_time:'May–Jun, Sep–Oct',currency:'EUR (Euro)',language:'Catalan/Spanish',visa:'Schengen 90 days',safety:'Generally safe – beware pickpockets',stats:{flight_from_uk:'£100',hotel_mid:'$110/night',meal:'$12–30',transport:'$15/day'},category:'beach'},
-  {id:'istanbul',name:'Istanbul',country:'Turkey',emoji:'🕌',budget_per_day:75,highlights:['Hagia Sophia','Grand Bazaar','Bosphorus cruise','Topkapi Palace'],desc:'Straddling two continents, Istanbul is where East meets West in a magnificent collision of Byzantine domes, Ottoman minarets, bustling bazaars and world-renowned cuisine.',best_time:'Apr–May, Sep–Nov',currency:'TRY (Lira)',language:'Turkish',visa:'eVisa $35 for most',safety:'Generally safe',stats:{flight_from_uk:'£120',hotel_mid:'$60/night',meal:'$6–18',transport:'$8/day'},category:'culture'},
-  {id:'new_zealand',name:'Queenstown',country:'New Zealand',emoji:'🏔️',budget_per_day:160,highlights:['Bungee jumping','Milford Sound','Fiordland National Park','Ski fields'],desc:'The adventure capital of the world perches on the shores of Lake Wakatipu surrounded by the Remarkables mountain range. Bungee, ski, hike or simply stare in disbelief.',best_time:'Dec–Feb (summer), Jun–Aug (skiing)',currency:'NZD (Dollar)',language:'English/Māori',visa:'NZeTA $17',safety:'Very safe',stats:{flight_from_uk:'£820',hotel_mid:'$130/night',meal:'$15–35',transport:'$25/day'},category:'adventure'},
-  {id:'havana',name:'Havana',country:'Cuba',emoji:'🎺',budget_per_day:60,highlights:['Classic cars','Old Havana','Malecón','Viñales Valley tobacco'],desc:'Frozen in time yet vibrating with life. Havana\'s crumbling colonial architecture, vintage American cars, salsa music and incredible rum culture create a truly unique world.',best_time:'Dec–Apr',currency:'CUP (Peso)',language:'Spanish',visa:'Tourist card ~$25',safety:'Generally safe',stats:{flight_from_uk:'£580',hotel_mid:'$40/night',meal:'$8–20',transport:'$10/day'},category:'culture'},
-  {id:'rio',name:'Rio de Janeiro',country:'Brazil',emoji:'🌊',budget_per_day:90,highlights:['Christ the Redeemer','Copacabana beach','Carnival','Sugarloaf Mountain'],desc:'Rio pulses with an irresistible energy. Iconic beaches, samba rhythms, stunning mountains and the world\'s greatest party combine for an unforgettable Brazilian experience.',best_time:'Dec–Mar (Carnival), May–Oct (dry season)',currency:'BRL (Real)',language:'Portuguese',visa:'Free 90 days for most',safety:'Exercise caution – research areas',stats:{flight_from_uk:'£580',hotel_mid:'$70/night',meal:'$8–20',transport:'$10/day'},category:'beach'},
-  {id:'vietnam',name:'Hoi An',country:'Vietnam',emoji:'🏮',budget_per_day:40,highlights:['Ancient Town lanterns','My Son sanctuary','Cooking classes','Marble Mountains'],desc:'Vietnam\'s most enchanting town glows with hundreds of silk lanterns at night. Ancient trading port architecture, incredible local cuisine and tailor-made clothes await.',best_time:'Feb–Apr, Aug–Sep',currency:'VND (Dong)',language:'Vietnamese',visa:'Free 45 days for most',safety:'Very safe',stats:{flight_from_uk:'£520',hotel_mid:'$20/night',meal:'$2–6',transport:'$3/day'},category:'culture'},
-  {id:'colombia',name:'Cartagena',country:'Colombia',emoji:'🌺',budget_per_day:70,highlights:['Walled city','Rosario Islands','Gold Museum','Street food'],desc:'Colombia\'s Caribbean gem stuns with its rainbow-coloured colonial architecture, tropical islands, extraordinary coffee culture and a warmth that will make you want to stay forever.',best_time:'Dec–Apr',currency:'COP (Peso)',language:'Spanish',visa:'Free 90 days',safety:'Moderate – stick to tourist areas',stats:{flight_from_uk:'£580',hotel_mid:'$50/night',meal:'$5–15',transport:'$8/day'},category:'beach'},
-  {id:'safari_tz',name:'Serengeti',country:'Tanzania',emoji:'🐘',budget_per_day:250,highlights:['Great Migration','Big Five safari','Ngorongoro Crater','Zanzibar beach'],desc:'Witness the greatest wildlife show on Earth. Millions of wildebeest thunder across endless golden plains while lions, elephants and cheetahs go about their ancient rhythms.',best_time:'Jul–Oct (Migration), Jan–Feb (calving)',currency:'TZS (Shilling)',language:'Swahili/English',visa:'eVisa $50',safety:'Generally safe in parks',stats:{flight_from_uk:'£620',hotel_mid:'$200/night (lodge)',meal:'$15–40',transport:'$80/day (safari)'},category:'adventure'},
-  {id:'prague',name:'Prague',country:'Czech Republic',emoji:'🏰',budget_per_day:80,highlights:['Prague Castle','Charles Bridge','Old Town Square','Beer culture'],desc:'Europe\'s most intact medieval city feels like a fairytale that survived history\'s worst moments. Gothic spires, Baroque palaces and the world\'s best beer await around every corner.',best_time:'Apr–Jun, Sep–Oct',currency:'CZK (Koruna)',language:'Czech',visa:'Schengen 90 days',safety:'Very safe',stats:{flight_from_uk:'£80',hotel_mid:'$70/night',meal:'$8–18',transport:'$8/day'},category:'culture'},
-  {id:'hawaii',name:'Maui',country:'USA (Hawaii)',emoji:'🌺',budget_per_day:280,highlights:['Road to Hana','Haleakalā volcano','Snorkelling Molokini','Luau experiences'],desc:'Hawaii\'s second island delivers the most spectacular scenery in America. Volcanic craters, black sand beaches, waterfalls and whale watching make Maui deeply special.',best_time:'Apr–May, Sep–Nov',currency:'USD (Dollar)',language:'English/Hawaiian',visa:'ESTA $21',safety:'Very safe',stats:{flight_from_uk:'£760',hotel_mid:'$250/night',meal:'$20–50',transport:'$40/day'},category:'beach'},
-  {id:'edinburgh',name:'Edinburgh',country:'Scotland, UK',emoji:'🏴󠁧󠁢󠁳󠁣󠁴󠁿',budget_per_day:110,highlights:['Edinburgh Castle','Arthur\'s Seat','Fringe Festival','Royal Mile whisky'],desc:'Scotland\'s dramatic capital piles ancient castle, volcanic rock, whisky bars and festival culture into one of Europe\'s most atmospheric and walkable cities.',best_time:'Aug (Festival), Apr–Jun',currency:'GBP (Pound)',language:'English/Scots Gaelic',visa:'No visa for most EU/US',safety:'Very safe',stats:{flight_from_uk:'domestic',hotel_mid:'$100/night',meal:'$12–28',transport:'$12/day'},category:'city'},
-  {id:'petra',name:'Petra',country:'Jordan',emoji:'🏜️',budget_per_day:100,highlights:['Treasury facade','Monastery hike','Siq canyon','Wadi Rum desert'],desc:'The rose-red city carved into sandstone cliffs ranks among humanity\'s greatest achievements. Walking through the Siq to reveal the Treasury is an experience that marks you forever.',best_time:'Mar–May, Sep–Nov',currency:'JOD (Dinar)',language:'Arabic/English',visa:'Jordan Pass $70 (includes entry)',safety:'Very safe',stats:{flight_from_uk:'£280',hotel_mid:'$80/night',meal:'$10–25',transport:'$20/day'},category:'culture'},
-  {id:'lisbon',name:'Lisbon',country:'Portugal',emoji:'🛤️',budget_per_day:95,highlights:['Alfama district','Belém Tower','Tram 28','Fado music'],desc:'Europe\'s sunniest capital tumbles down seven hills to the Tagus River in a cascade of tiled facades, pastel de nata and melancholic fado music. Deeply charming, deeply affordable.',best_time:'Apr–Oct',currency:'EUR (Euro)',language:'Portuguese',visa:'Schengen 90 days',safety:'Very safe',stats:{flight_from_uk:'£80',hotel_mid:'$90/night',meal:'$10–22',transport:'$10/day'},category:'city'},
-  {id:'kyoto',name:'Kyoto',country:'Japan',emoji:'⛩️',budget_per_day:130,highlights:['Fushimi Inari shrine','Bamboo grove Arashiyama','Geisha district Gion','Nijo Castle'],desc:'Japan\'s ancient capital preserves thousands of temples, shrines and traditional wooden machiya townhouses. Cherry blossom season transforms Kyoto into the world\'s most beautiful city.',best_time:'Mar–May, Oct–Nov',currency:'JPY (Yen)',language:'Japanese',visa:'Free 90 days',safety:'Extremely safe',stats:{flight_from_uk:'£620',hotel_mid:'$85/night',meal:'$8–22',transport:'$12/day'},category:'culture'},
-  {id:'buenos_aires',name:'Buenos Aires',country:'Argentina',emoji:'🥩',budget_per_day:65,highlights:['La Boca neighbourhood','Tango shows','Recoleta Cemetery','Patagonia day trips'],desc:'The Paris of South America seduces with European architecture, world-class steak, passionate tango and a café culture that makes lingering over coffee feel like a civic duty.',best_time:'Mar–May, Sep–Nov',currency:'ARS (Peso)',language:'Spanish',visa:'Free 90 days for most',safety:'Moderate – watch your belongings',stats:{flight_from_uk:'£680',hotel_mid:'$50/night',meal:'$8–22',transport:'$5/day'},category:'city'},
+const DESTS=[
+  {id:'bali',n:'Bali',c:'Indonesia',e:'🌴',ppd:55,cat:'beach',hl:['Ubud rice terraces','Tanah Lot temple','Seminyak beach','Mount Batur hike'],desc:'A tropical paradise of emerald rice terraces, sacred temples, surf breaks and vibrant nightlife. Bali offers the perfect blend of adventure, culture and relaxation.',bt:'Apr–Oct',vis:'Free 30 days',safe:'Very safe',stats:{Flight:'£580 from UK',Hotel:'$35/night',Meal:'$4–8',Transport:'$5/day'}},
+  {id:'paris',n:'Paris',c:'France',e:'🗼',ppd:180,cat:'culture',hl:['Eiffel Tower','Louvre Museum','Montmartre','Seine river cruise'],desc:'The City of Light captivates with world-class art, Michelin-starred cuisine and a romantic atmosphere that has inspired artists for centuries.',bt:'Apr–Jun, Sep–Oct',vis:'Schengen 90 days',safe:'Generally safe',stats:{Flight:'£120 from UK',Hotel:'$150/night',Meal:'$20–45',Transport:'$20/day'}},
+  {id:'tokyo',n:'Tokyo',c:'Japan',e:'🗾',ppd:120,cat:'city',hl:['Shibuya crossing','Tsukiji market','Akihabara district','Mount Fuji day trip'],desc:'A dazzling collision of ultra-modern and deeply traditional. Tokyo overwhelms with precision, extraordinary food and neon-lit urban energy.',bt:'Mar–May, Oct–Nov',vis:'Free 90 days',safe:'Extremely safe',stats:{Flight:'£650 from UK',Hotel:'$90/night',Meal:'$8–20',Transport:'$15/day'}},
+  {id:'nairobi',n:'Nairobi',c:'Kenya',e:'🦁',ppd:95,cat:'adventure',hl:['Maasai Mara safaris','Nairobi National Park','Karen Blixen Museum','Giraffe Centre'],desc:'East Africa\'s vibrant capital is the gateway to extraordinary wildlife safaris. Watch the Great Migration and experience Africa\'s most dynamic city.',bt:'Jul–Oct, Jan–Feb',vis:'eVisa $51',safe:'Exercise caution',stats:{Flight:'£520 from UK',Hotel:'$70/night',Meal:'$6–15',Transport:'$10/day'}},
+  {id:'dubai',n:'Dubai',c:'UAE',e:'🏙️',ppd:200,cat:'luxury',hl:['Burj Khalifa','Desert safari','Dubai Mall','Palm Jumeirah'],desc:'A city built from ambition and luxury. Dubai stuns with record-breaking architecture, world-class shopping and some of the most extravagant dining on earth.',bt:'Nov–Mar',vis:'Free 30 days',safe:'Very safe',stats:{Flight:'£400 from UK',Hotel:'$120/night',Meal:'$15–50',Transport:'$20/day'}},
+  {id:'nyc',n:'New York City',c:'USA',e:'🗽',ppd:220,cat:'city',hl:['Central Park','Times Square','Metropolitan Museum','Brooklyn Bridge'],desc:'The city that never sleeps pulses with unmatched energy. Broadway shows, hidden pizza joints, skyscraper views — NYC delivers endless discovery.',bt:'Apr–Jun, Sep–Nov',vis:'ESTA $21',safe:'Generally safe',stats:{Flight:'£380 from UK',Hotel:'$200/night',Meal:'$15–40',Transport:'$15/day'}},
+  {id:'santorini',n:'Santorini',c:'Greece',e:'🏛️',ppd:160,cat:'beach',hl:['Oia sunset views','Caldera panorama','Black sand beaches','Akrotiri ruins'],desc:'Perched on volcanic cliffs above the Aegean, Santorini\'s blue-domed churches and legendary sunsets make it one of the most photographed places on Earth.',bt:'May–Oct',vis:'Schengen 90 days',safe:'Very safe',stats:{Flight:'£250 from UK',Hotel:'$130/night',Meal:'$20–50',Transport:'$25/day'}},
+  {id:'machu',n:'Machu Picchu',c:'Peru',e:'🏔️',ppd:85,cat:'adventure',hl:['Inca citadel','Sun Gate trek','Sacred Valley','Aguas Calientes'],desc:'The lost city of the Incas emerges from Andean clouds in one of humanity\'s most dramatic archaeological revelations. A journey here changes everything.',bt:'May–Sep',vis:'Free 90–183 days',safe:'Moderate',stats:{Flight:'£680 from UK',Hotel:'$60/night',Meal:'$8–20',Transport:'$30/day'}},
+  {id:'maldives',n:'Maldives',c:'Maldives',e:'🐠',ppd:350,cat:'luxury',hl:['Overwater bungalows','Coral reef diving','Bioluminescent beaches','Whale shark snorkelling'],desc:'Arguably the world\'s most beautiful destination. Crystal lagoons, powder-white sand and colourful coral reefs combine for ultimate seclusion.',bt:'Nov–Apr',vis:'Free 30 days',safe:'Very safe',stats:{Flight:'£680 from UK',Hotel:'$400/night',Meal:'$30–80',Transport:'$40/day'}},
+  {id:'rome',n:'Rome',c:'Italy',e:'🏺',ppd:140,cat:'culture',hl:['Colosseum','Vatican Museums','Trevi Fountain','Trastevere neighbourhood'],desc:'The Eternal City layers 2,800 years of history at every corner. Ancient ruins, Renaissance masterpieces and impossibly good pasta around every cobbled street.',bt:'Apr–Jun, Sep–Oct',vis:'Schengen 90 days',safe:'Generally safe',stats:{Flight:'£100 from UK',Hotel:'$110/night',Meal:'$15–35',Transport:'$15/day'}},
+  {id:'capetown',n:'Cape Town',c:'South Africa',e:'🌊',ppd:90,cat:'adventure',hl:['Table Mountain','Cape of Good Hope','Boulders Beach penguins','Cape Winelands'],desc:'Where mountains meet the ocean in spectacular fashion. World-class wine, diverse cuisine and proximity to incredible wildlife.',bt:'Nov–Feb',vis:'Free 90 days',safe:'Exercise caution',stats:{Flight:'£600 from UK',Hotel:'$75/night',Meal:'$8–20',Transport:'$15/day'}},
+  {id:'thailand',n:'Bangkok & Thailand',c:'Thailand',e:'🙏',ppd:50,cat:'beach',hl:['Grand Palace','Floating markets','Phi Phi Islands','Chiang Mai temples'],desc:'Thailand seduces with vibrant street food, ornate temples, turquoise islands and legendary nightlife. One of the world\'s best value destinations.',bt:'Nov–Feb',vis:'Free 60 days',safe:'Generally safe',stats:{Flight:'£490 from UK',Hotel:'$30/night',Meal:'$3–8',Transport:'$5/day'}},
+  {id:'amsterdam',n:'Amsterdam',c:'Netherlands',e:'🚲',ppd:145,cat:'city',hl:['Anne Frank House','Rijksmuseum','Canal boat tours','Vondelpark'],desc:'A city built on canals, bicycles and open-minded culture. World-class museums, historic architecture and a vibrant food scene.',bt:'Apr–Sep',vis:'Schengen 90 days',safe:'Very safe',stats:{Flight:'£80 from UK',Hotel:'$130/night',Meal:'$18–40',Transport:'$10/day'}},
+  {id:'iceland',n:'Iceland',c:'Iceland',e:'🌌',ppd:180,cat:'adventure',hl:['Northern Lights','Blue Lagoon','Golden Circle','Glacier hikes'],desc:'Iceland\'s raw volcanic landscapes, geysers, waterfalls and Northern Lights create an otherworldly experience.',bt:'Jun–Aug or Sep–Mar',vis:'Schengen 90 days',safe:'Safest country in world',stats:{Flight:'£180 from UK',Hotel:'$160/night',Meal:'$25–60',Transport:'$40/day'}},
+  {id:'marrakech',n:'Marrakech',c:'Morocco',e:'🕌',ppd:65,cat:'culture',hl:['Djemaa el-Fna square','Ancient souks & medina','Atlas Mountains','Sahara Desert'],desc:'Marrakech overwhelms the senses with labyrinthine souks, rose-red medina walls and the vast Sahara just hours away.',bt:'Mar–May, Sep–Nov',vis:'Free 90 days',safe:'Generally safe',stats:{Flight:'£120 from UK',Hotel:'$50/night',Meal:'$5–15',Transport:'$8/day'}},
+  {id:'singapore',n:'Singapore',c:'Singapore',e:'🦁',ppd:130,cat:'city',hl:['Gardens by the Bay','Hawker food centres','Sentosa Island','Marina Bay Sands'],desc:'A futuristic city-state where gleaming skyscrapers share space with lush greenery and the world\'s greatest street food culture.',bt:'Year-round',vis:'Free 30–90 days',safe:'Extremely safe',stats:{Flight:'£580 from UK',Hotel:'$120/night',Meal:'$5–30',Transport:'$10/day'}},
+  {id:'barcelona',n:'Barcelona',c:'Spain',e:'🎨',ppd:120,cat:'beach',hl:['Sagrada Família','Park Güell','La Boqueria market','Gothic Quarter'],desc:'Gaudí\'s masterpieces, golden Mediterranean beaches, world-class tapas and pulsating nightlife make Barcelona endlessly rewarding.',bt:'May–Jun, Sep–Oct',vis:'Schengen 90 days',safe:'Generally safe',stats:{Flight:'£100 from UK',Hotel:'$110/night',Meal:'$12–30',Transport:'$15/day'}},
+  {id:'istanbul',n:'Istanbul',c:'Turkey',e:'🕌',ppd:75,cat:'culture',hl:['Hagia Sophia','Grand Bazaar','Bosphorus cruise','Topkapi Palace'],desc:'Straddling two continents, Istanbul is where East meets West in a magnificent collision of Byzantine domes, Ottoman minarets and world-renowned cuisine.',bt:'Apr–May, Sep–Nov',vis:'eVisa $35',safe:'Generally safe',stats:{Flight:'£120 from UK',Hotel:'$60/night',Meal:'$6–18',Transport:'$8/day'}},
+  {id:'nz',n:'Queenstown',c:'New Zealand',e:'🏔️',ppd:160,cat:'adventure',hl:['Bungee jumping','Milford Sound','Fiordland National Park','Ski fields'],desc:'The adventure capital of the world perches on Lake Wakatipu surrounded by the Remarkables. Bungee, ski, hike or simply stare in disbelief.',bt:'Dec–Feb or Jun–Aug',vis:'NZeTA $17',safe:'Very safe',stats:{Flight:'£820 from UK',Hotel:'$130/night',Meal:'$15–35',Transport:'$25/day'}},
+  {id:'havana',n:'Havana',c:'Cuba',e:'🎺',ppd:60,cat:'culture',hl:['Vintage classic cars','Old Havana UNESCO district','Malecón seafront','Viñales Valley'],desc:'Frozen in time yet vibrating with life. Vintage American cars, salsa music, incredible rum culture and crumbling colonial beauty.',bt:'Dec–Apr',vis:'Tourist card ~$25',safe:'Generally safe',stats:{Flight:'£580 from UK',Hotel:'$40/night',Meal:'$8–20',Transport:'$10/day'}},
+  {id:'rio',n:'Rio de Janeiro',c:'Brazil',e:'🌊',ppd:90,cat:'beach',hl:['Christ the Redeemer','Copacabana beach','Carnival festival','Sugarloaf Mountain'],desc:'Rio pulses with irresistible energy. Iconic beaches, samba rhythms, stunning mountains and the world\'s greatest party.',bt:'Dec–Mar or May–Oct',vis:'Free 90 days',safe:'Exercise caution',stats:{Flight:'£580 from UK',Hotel:'$70/night',Meal:'$8–20',Transport:'$10/day'}},
+  {id:'hoian',n:'Hoi An',c:'Vietnam',e:'🏮',ppd:40,cat:'culture',hl:['Ancient Town lanterns','Vietnamese cooking classes','My Son Sanctuary','Marble Mountains'],desc:'Vietnam\'s most enchanting town glows with hundreds of silk lanterns at night. Ancient trading port, incredible cuisine and tailor-made clothes.',bt:'Feb–Apr, Aug–Sep',vis:'Free 45 days',safe:'Very safe',stats:{Flight:'£520 from UK',Hotel:'$20/night',Meal:'$2–6',Transport:'$3/day'}},
+  {id:'cartagena',n:'Cartagena',c:'Colombia',e:'🌺',ppd:70,cat:'beach',hl:['Walled colonial city','Rosario Islands','Street food scene','Gold Museum'],desc:'Colombia\'s Caribbean gem stuns with rainbow-coloured colonial architecture, tropical islands and a warmth that will make you want to stay forever.',bt:'Dec–Apr',vis:'Free 90 days',safe:'Moderate',stats:{Flight:'£580 from UK',Hotel:'$50/night',Meal:'$5–15',Transport:'$8/day'}},
+  {id:'serengeti',n:'Serengeti',c:'Tanzania',e:'🐘',ppd:250,cat:'adventure',hl:['Great Migration spectacle','Big Five game drives','Ngorongoro Crater','Zanzibar beach extension'],desc:'Witness the greatest wildlife show on Earth. Millions of wildebeest thunder across endless golden plains while lions and cheetahs hunt.',bt:'Jul–Oct, Jan–Feb',vis:'eVisa $50',safe:'Safe in national parks',stats:{Flight:'£620 from UK',Hotel:'$200/night lodge',Meal:'$15–40',Transport:'$80/day safari'}},
+  {id:'prague',n:'Prague',c:'Czech Republic',e:'🏰',ppd:80,cat:'culture',hl:['Prague Castle','Charles Bridge','Old Town Astronomical Clock','Czech beer culture'],desc:'Europe\'s most intact medieval city feels like a fairytale. Gothic spires, baroque palaces and the world\'s finest beer await.',bt:'Apr–Jun, Sep–Oct',vis:'Schengen 90 days',safe:'Very safe',stats:{Flight:'£80 from UK',Hotel:'$70/night',Meal:'$8–18',Transport:'$8/day'}},
+  {id:'maui',n:'Maui',c:'USA — Hawaii',e:'🌺',ppd:280,cat:'beach',hl:['Road to Hana waterfall drive','Haleakalā volcano sunrise','Molokini snorkelling','Polynesian luau'],desc:'Hawaii\'s most spectacular island delivers volcanic craters, black sand beaches, whale watching and lush rainforest all in one breathtaking package.',bt:'Apr–May, Sep–Nov',vis:'ESTA $21',safe:'Very safe',stats:{Flight:'£760 from UK',Hotel:'$250/night',Meal:'$20–50',Transport:'$40/day'}},
+  {id:'edinburgh',n:'Edinburgh',c:'Scotland, UK',e:'🏴󠁧󠁢󠁳󠁣󠁴󠁿',ppd:110,cat:'city',hl:['Edinburgh Castle','Arthur\'s Seat hike','Fringe Festival August','Royal Mile whisky trail'],desc:'Scotland\'s dramatic capital piles ancient castle, volcanic rock, whisky culture and festival energy into one of Europe\'s most atmospheric cities.',bt:'Aug Festival or Apr–Jun',vis:'No visa for most',safe:'Very safe',stats:{Flight:'Domestic UK',Hotel:'$100/night',Meal:'$12–28',Transport:'$12/day'}},
+  {id:'petra',n:'Petra',c:'Jordan',e:'🏜️',ppd:100,cat:'culture',hl:['Rose-red Treasury facade','Monastery summit hike','Siq canyon entrance','Wadi Rum desert camp'],desc:'The rose-red city carved into sandstone cliffs. Walking through the Siq to reveal the Treasury is an experience that marks you forever.',bt:'Mar–May, Sep–Nov',vis:'Jordan Pass $70',safe:'Very safe',stats:{Flight:'£280 from UK',Hotel:'$80/night',Meal:'$10–25',Transport:'$20/day'}},
+  {id:'lisbon',n:'Lisbon',c:'Portugal',e:'🛤️',ppd:95,cat:'city',hl:['Alfama historic district','Belém Tower','Iconic Tram 28','Fado music evenings'],desc:'Europe\'s sunniest capital tumbles down seven hills in a cascade of tiled facades, pastel de nata pastries and melancholic fado music.',bt:'Apr–Oct',vis:'Schengen 90 days',safe:'Very safe',stats:{Flight:'£80 from UK',Hotel:'$90/night',Meal:'$10–22',Transport:'$10/day'}},
+  {id:'kyoto',n:'Kyoto',c:'Japan',e:'⛩️',ppd:130,cat:'culture',hl:['Fushimi Inari torii gates','Arashiyama bamboo grove','Gion geisha district','Nijo Castle'],desc:'Japan\'s ancient capital preserves thousands of temples and shrines. Cherry blossom season transforms Kyoto into the world\'s most beautiful city.',bt:'Mar–May, Oct–Nov',vis:'Free 90 days',safe:'Extremely safe',stats:{Flight:'£620 from UK',Hotel:'$85/night',Meal:'$8–22',Transport:'$12/day'}},
+  {id:'ba',n:'Buenos Aires',c:'Argentina',e:'🥩',ppd:65,cat:'city',hl:['La Boca colourful neighbourhood','Tango shows in San Telmo','Recoleta Cemetery','Patagonia day trips'],desc:'The Paris of South America seduces with European architecture, world-class steak, passionate tango and an irresistible café culture.',bt:'Mar–May, Sep–Nov',vis:'Free 90 days',safe:'Moderate',stats:{Flight:'£680 from UK',Hotel:'$50/night',Meal:'$8–22',Transport:'$5/day'}},
 ];
 
-const CATEGORY_EMOJIS = {accommodation:'🏨',food:'🍽️',transport:'✈️',activities:'🎭',shopping:'🛍️',health:'💊',other:'📌'};
-const GROQ_KEY = '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';
+const CATC={accommodation:'🏨',food:'🍽️',transport:'✈️',activities:'🎭',shopping:'🛍️',health:'💊',other:'📌'};
+const CATBG={accommodation:'#e8f0fb',food:'#fff3e0',transport:'#e8f5ee',activities:'#fef3e6',shopping:'#fce4ec',health:'#f3e5f5',other:'#f5f5f5'};
+const GK='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';
 
-/* ══════════════════════════════════════════════
-   STORAGE
-══════════════════════════════════════════════ */
-const S={get:k=>{try{return JSON.parse(localStorage.getItem('wa_'+k))}catch{return null}},set:(k,v)=>localStorage.setItem('wa_'+k,JSON.stringify(v)),del:k=>localStorage.removeItem('wa_'+k)};
+const S={get:k=>{try{return JSON.parse(localStorage.getItem('wa_'+k))}catch{return null}},set:(k,v)=>localStorage.setItem('wa_'+k,JSON.stringify(v))};
+let CU=null,trips=[],exps=[],chatH=[],aiOn=false,coOn=false,selD=null,curCat='all',curQ='';
 
-/* ══════════════════════════════════════════════
-   AUTH
-══════════════════════════════════════════════ */
-let currentUser=null;
-function getAccounts(){return S.get('accounts')||{}}
-function saveAccounts(a){S.set('accounts',a)}
-function getUserData(e){return S.get('ud_'+e)||{trips:[],expenses:[]}}
-function saveUserData(e,d){S.set('ud_'+e,d)}
+/* AUTH */
+function getAcc(){return S.get('accs')||{}}
+function saveAcc(a){S.set('accs',a)}
+function getUD(e){return S.get('ud_'+e)||{trips:[],exps:[]}}
+function saveUD(e,d){S.set('ud_'+e,d)}
 
-function authTab(t){
-  document.getElementById('tab-si').classList.toggle('on',t==='si');
-  document.getElementById('tab-su').classList.toggle('on',t==='su');
-  document.getElementById('form-si').style.display=t==='si'?'block':'none';
-  document.getElementById('form-su').style.display=t==='su'?'block':'none';
+function atab(t){
+  ['si','su'].forEach(x=>{
+    document.getElementById('t'+x).classList.toggle('on',x===t);
+    document.getElementById('f'+x).style.display=x===t?'block':'none';
+  });
 }
-
-function doSignUp(){
-  const name=document.getElementById('su-name').value.trim();
-  const email=document.getElementById('su-email').value.trim().toLowerCase();
-  const pw=document.getElementById('su-pw').value;
-  const err=document.getElementById('su-err');
-  if(!name||!email||!pw){err.textContent='Please fill in all fields.';return}
-  if(pw.length<6){err.textContent='Password must be at least 6 characters.';return}
-  const acc=getAccounts();
-  if(acc[email]){err.textContent='Account already exists. Sign in instead.';return}
-  acc[email]={name,pw,created:Date.now(),currency:'USD'};
-  saveAccounts(acc);
-  saveUserData(email,{trips:[],expenses:[]});
-  err.textContent='';
-  signIn(email,name,'USD');
-}
-
-function doSignIn(){
-  const email=document.getElementById('si-email').value.trim().toLowerCase();
-  const pw=document.getElementById('si-pw').value;
+function doSI(){
+  const e=document.getElementById('si-e').value.trim().toLowerCase();
+  const p=document.getElementById('si-p').value;
   const err=document.getElementById('si-err');
-  const acc=getAccounts();
-  if(!acc[email]||acc[email].pw!==pw){err.textContent='Incorrect email or password.';return}
-  err.textContent='';
-  signIn(email,acc[email].name,acc[email].currency||'USD');
+  const a=getAcc();
+  if(!a[e]||a[e].pw!==p){err.textContent='Incorrect email or password.';return}
+  err.textContent='';signIn(e,a[e].name,a[e].cur||'USD');
 }
-
-function signIn(email,name,currency){
+function doSU(){
+  const n=document.getElementById('su-n').value.trim();
+  const e=document.getElementById('su-e').value.trim().toLowerCase();
+  const p=document.getElementById('su-p').value;
+  const err=document.getElementById('su-err');
+  if(!n||!e||!p){err.textContent='Please fill in all fields.';return}
+  if(p.length<6){err.textContent='Password must be at least 6 characters.';return}
+  const a=getAcc();
+  if(a[e]){err.textContent='Account already exists. Sign in instead.';return}
+  a[e]={name:n,pw:p,cur:'USD'};saveAcc(a);
+  saveUD(e,{trips:[],exps:[]});
+  err.textContent='';signIn(e,n,'USD');
+}
+function signIn(e,n,cur){
   try{
-    currentUser={email,name,currency:currency||'USD'};
-    S.set('session',{email,name,currency});
-    document.getElementById('auth').classList.add('hide');
-    document.getElementById('app').classList.remove('hide');
-    if(S.get('dark_mode'))document.body.classList.add('dark');
-    try { initApp(); } catch(e){ console.error('initApp error:',e); }
-  }catch(e){console.error('signIn error:',e)}
+    CU={email:e,name:n,cur:cur||'USD'};
+    S.set('sess',{email:e,name:n,cur});
+    document.getElementById('auth').classList.add('gone');
+    if(S.get('dark'))applyDark(true);
+    loadData();
+    const hn=document.getElementById('hname'),ha=document.getElementById('hav');
+    if(hn)hn.textContent=n;
+    if(ha)ha.textContent=n.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+    renderHome();initChat();renderTrips();renderBudget();
+  }catch(err){console.error('signIn error:',err);}
+}
+function signOut(){saveData();CU=null;S.set('sess',null);location.reload();}
+function checkSess(){
+  const s=S.get('sess');if(!s||!s.email)return false;
+  const a=getAcc();if(!a[s.email])return false;
+  CU=s;return true;
 }
 
-function doSignOut(){
-  saveNow();
-  currentUser=null;
-  S.del('session');
-  closeProfile();
-  location.reload();
-}
+/* DATA */
+function loadData(){const d=getUD(CU.email);trips=d.trips||[];exps=d.exps||[];}
+function saveData(){if(!CU)return;saveUD(CU.email,{trips,exps});}
 
-function checkSession(){
-  const s=S.get('session');
-  if(!s||!s.email)return false;
-  const acc=getAccounts();
-  if(!acc[s.email])return false;
-  currentUser=s;
-  return true;
-}
-
-/* ══════════════════════════════════════════════
-   USER DATA
-══════════════════════════════════════════════ */
-let trips=[],expenses=[];
-
-function loadData(){
-  const ud=getUserData(currentUser.email);
-  trips=ud.trips||[];
-  expenses=ud.expenses||[];
-}
-
-function saveNow(){
-  if(!currentUser)return;
-  saveUserData(currentUser.email,{trips,expenses});
-}
-
-/* ══════════════════════════════════════════════
-   NAVIGATION
-══════════════════════════════════════════════ */
+/* NAV */
 function sw(id,btn){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
   const sc=document.getElementById('s-'+id);
   if(sc)sc.classList.add('active');
   if(btn)btn.classList.add('on');
-  const renders={home:renderHome,plan:()=>{if(!document.getElementById('chat-area').children.length)initChat()},trips:renderTrips,companion:renderCompanion,budget:renderBudget};
-  if(renders[id])try{renders[id]()}catch(e){console.warn(e)}
+  if(id==='plan'&&!document.getElementById('ca').children.length)initChat();
+  if(id==='comp')renderComp();
+  if(id==='bud')renderBudget();
 }
 
-/* ══════════════════════════════════════════════
-   INIT
-══════════════════════════════════════════════ */
-function initApp(){
-  loadData();
-  renderHome();
-  initChat();
-  renderTrips();
-  renderBudget();
-  const hn=document.getElementById('home-name');
-  const ha=document.getElementById('home-avatar');
-  if(hn)hn.textContent=currentUser.name;
-  if(ha)ha.textContent=currentUser.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
-  // PWA install
-  setTimeout(checkInstall,3000);
+/* DESTINATIONS */
+function dg(cat){const g={beach:'#1a6b8a,#2d9eb5',culture:'#6b3a1a,#b5622d',adventure:'#1a4a2a,#2d8a4a',luxury:'#4a3a1a,#8a6a2d',city:'#2a2a4a,#4a4a8a'};return g[cat]||'#2a3a2a,#4a6a4a';}
+function renderHome(){renderDests();}
+function filterD(q){curQ=q.toLowerCase();renderDests();}
+function setCat(cat,btn){
+  curCat=cat;
+  document.querySelectorAll('[data-cat]').forEach(b=>{b.style.background='';b.style.color='';b.style.borderColor='';});
+  btn.style.background='var(--forest)';btn.style.color='#fff';btn.style.borderColor='var(--forest)';
+  renderDests();
 }
-
-/* ══════════════════════════════════════════════
-   HOME / DESTINATIONS
-══════════════════════════════════════════════ */
-let filteredDests=DESTINATIONS;
-function renderHome(){
-  renderDestinations(filteredDests);
-}
-
-function renderDestinations(dests){
-  const el=document.getElementById('dest-list');
-  if(!el)return;
-  el.innerHTML=dests.map(d=>`
-    <div class="dest-card" onclick="openDest('${d.id}')">
-      <div class="dest-img-placeholder" style="background:linear-gradient(135deg,${destGradient(d.category)})">
-        <span style="font-size:70px">${d.emoji}</span>
+function renderDests(){
+  const ds=DESTS.filter(d=>(curCat==='all'||d.cat===curCat)&&(!curQ||(d.n.toLowerCase().includes(curQ)||d.c.toLowerCase().includes(curQ))));
+  const el=document.getElementById('dlist');if(!el)return;
+  const ct=document.getElementById('dcnt');if(ct)ct.textContent=ds.length+' destination'+(ds.length!==1?'s':'');
+  el.innerHTML=ds.map(d=>`
+    <div class="dc" onclick="openDd('${d.id}')">
+      <div class="dc-img" style="background:linear-gradient(135deg,${dg(d.cat)})">
+        <span style="font-size:74px;line-height:1;user-select:none">${d.e}</span>
       </div>
-      <div class="dest-overlay">
-        <div class="dest-name">${d.name}</div>
-        <div class="dest-sub">${d.country} · ${d.best_time}</div>
+      <div class="dc-overlay">
+        <div class="dc-name">${d.n}</div>
+        <div class="dc-sub">${d.c} &middot; Best: ${d.bt}</div>
       </div>
-      <div class="dest-price">~$${d.budget_per_day}/day</div>
+      <div class="dc-price">~$${d.ppd}/day</div>
+      <div class="dc-badge">${d.cat}</div>
     </div>`).join('');
 }
 
-function destGradient(cat){
-  const g={beach:'#1a6b8a,#2d9eb5',culture:'#6b3a1a,#b5622d',adventure:'#1a4a2a,#2d8a4a',luxury:'#4a3a1a,#8a6a2d',city:'#2a2a4a,#4a4a8a'};
-  return g[cat]||'#2a3a2a,#4a6a4a';
+function openDd(id){
+  const d=DESTS.find(x=>x.id===id);if(!d)return;
+  selD=d;
+  const img=document.getElementById('ddimg');
+  img.style.background=`linear-gradient(135deg,${dg(d.cat)})`;
+  const old=img.querySelector('.dde');if(old)old.remove();
+  const em=document.createElement('span');em.className='dde';em.style.cssText='font-size:90px;line-height:1;user-select:none';em.textContent=d.e;img.appendChild(em);
+  document.getElementById('dd-n').textContent=d.n;
+  document.getElementById('dd-c').textContent=d.c+' · Best time: '+d.bt;
+  document.getElementById('dd-p').textContent='~$'+d.ppd+'/day';
+  document.getElementById('dd-d').textContent=d.desc;
+  document.getElementById('dd-t').innerHTML=d.hl.map(h=>`<span class="pill pg" style="font-size:11px">${h}</span>`).join('');
+  document.getElementById('dd-s').innerHTML=Object.entries(d.stats).map(([k,v])=>`
+    <div class="stat-box"><div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-bottom:3px">${k}</div><div style="font-size:13px;font-weight:600;color:var(--t1)">${v}</div></div>`).join('');
+  document.getElementById('ddp').classList.add('open');
+}
+function closeDd(){document.getElementById('ddp').classList.remove('open');}
+function planFromDd(){
+  closeDd();
+  const nbs=document.querySelectorAll('.nb');
+  sw('plan',nbs[1]);
+  setTimeout(()=>qp('Plan a trip to '+selD.n+', '+selD.c+'. Budget ~$'+selD.ppd+' per day. Provide a full day-by-day itinerary with the best hotels, restaurants, activities and 2026 prices.'),400);
+}
+function addFromDd(){
+  closeDd();
+  document.getElementById('nt-n').value='Trip to '+selD.n;
+  document.getElementById('nt-d').value=selD.n+', '+selD.c;
+  document.getElementById('nt-b').value=selD.ppd*7;
+  openNT();
 }
 
-function filterDestinations(q){
-  filteredDests=q?DESTINATIONS.filter(d=>d.name.toLowerCase().includes(q.toLowerCase())||d.country.toLowerCase().includes(q.toLowerCase())||d.category.includes(q.toLowerCase())):DESTINATIONS;
-  renderDestinations(filteredDests);
-}
-
-let selectedDest=null;
-function openDest(id){
-  const d=DESTINATIONS.find(x=>x.id===id);
-  if(!d)return;
-  selectedDest=d;
-  document.getElementById('dest-detail-img').style.background=`linear-gradient(135deg,${destGradient(d.category)})`;
-  document.getElementById('dest-detail-img').querySelector('span')?.remove();
-  const emojiEl=document.createElement('span');
-  emojiEl.style.cssText='font-size:80px';
-  emojiEl.textContent=d.emoji;
-  document.getElementById('dest-detail-img').appendChild(emojiEl);
-  document.getElementById('dd-name').textContent=d.name;
-  document.getElementById('dd-country').textContent=d.country+' · '+d.best_time;
-  document.getElementById('dd-price').textContent='~$'+d.budget_per_day+'/day';
-  document.getElementById('dd-desc').textContent=d.desc;
-  document.getElementById('dd-highlights').innerHTML=d.highlights.map(h=>`<span class="pill pill-forest">${h}</span>`).join('');
-  document.getElementById('dd-stats').innerHTML=Object.entries(d.stats).map(([k,v])=>`
-    <div style="background:var(--sand2);border-radius:var(--rs);padding:10px 12px">
-      <p style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px">${k.replace(/_/g,' ')}</p>
-      <p style="font-size:13px;font-weight:500;color:var(--text1)">${v}</p>
-    </div>`).join('');
-  document.getElementById('dest-modal').classList.add('open');
-}
-
-function closeDestModal(){document.getElementById('dest-modal').classList.remove('open')}
-
-function planThisDestination(){
-  closeDestModal();
-  if(selectedDest){
-    sw('plan',document.querySelectorAll('.nb')[1]);
-    setTimeout(()=>qp('Plan a trip to '+selectedDest.name+', '+selectedDest.country+' with a budget of $'+selectedDest.budget_per_day+' per day. Include day-by-day itinerary, best places to stay, eat and visit with 2026 prices.'),300);
-  }
-}
-
-function addTripFromDest(){
-  closeDestModal();
-  if(selectedDest){
-    document.getElementById('nt-dest').value=selectedDest.name+', '+selectedDest.country;
-    document.getElementById('nt-name').value='Trip to '+selectedDest.name;
-    document.getElementById('nt-budget').value=selectedDest.budget_per_day*7;
-    showNewTrip();
-  }
-}
-
-/* ══════════════════════════════════════════════
-   AI PLANNER (Groq)
-══════════════════════════════════════════════ */
-let chatHistory=[];
-let aiTyping=false;
-
+/* AI PLANNER */
 function initChat(){
-  const area=document.getElementById('chat-area');
-  if(!area||area.children.length)return;
-  addMsg(`✈️ Hello ${currentUser.name}! I'm your WanderAI trip planner. Tell me where you'd like to go, your budget, travel dates and I'll create a personalised itinerary with real 2026 prices. Where shall we go?`,'ai');
+  const a=document.getElementById('ca');if(!a||a.children.length)return;
+  addMsg('✈️ Hello '+(CU?CU.name:'Traveller')+'! I\'m your WanderAI trip planner. Tell me your dream destination, budget, travel dates and who you\'re travelling with — I\'ll create a personalised day-by-day itinerary with real 2026 prices. Where shall we go?','ai');
 }
-
 function addMsg(text,role){
-  const area=document.getElementById('chat-area');
-  if(!area)return;
+  const a=document.getElementById('ca');if(!a)return;
   const d=document.createElement('div');
-  d.className='msg msg-'+role;
-  d.textContent=text;
-  area.appendChild(d);
-  area.scrollTop=area.scrollHeight;
-  chatHistory.push({role:role==='ai'?'assistant':'user',content:text});
+  d.className='msg m'+role;d.textContent=text;
+  a.appendChild(d);a.scrollTop=a.scrollHeight;
+  chatH.push({role:role==='ai'?'assistant':'user',content:text});
   return d;
 }
-
-function addTyping(){
-  const area=document.getElementById('chat-area');
-  const d=document.createElement('div');
-  d.className='msg msg-ai';
+function addTyp(){
+  const a=document.getElementById('ca');
+  const d=document.createElement('div');d.className='msg mai';
   d.innerHTML='<span class="tdot"></span><span class="tdot"></span><span class="tdot"></span>';
-  area.appendChild(d);
-  area.scrollTop=area.scrollHeight;
-  return d;
+  a.appendChild(d);a.scrollTop=a.scrollHeight;return d;
 }
-
-function clearChat(){chatHistory=[];document.getElementById('chat-area').innerHTML='';initChat();}
-function qp(t){document.getElementById('chat-inp').value=t;sendMsg();}
-
-async function sendMsg(){
-  const inp=document.getElementById('chat-inp');
-  const text=inp.value.trim();
-  if(!text||aiTyping)return;
-  inp.value='';
-  document.getElementById('plan-chips').style.display='none';
-  addMsg(text,'user');
-  aiTyping=true;
-  const typing=addTyping();
-  const sys=`You are WanderAI, an expert AI travel planner. Create detailed, personalised travel itineraries with REAL 2026 prices. Always include:
-- Day-by-day breakdown when asked for itinerary
+function clearChat(){chatH=[];const a=document.getElementById('ca');if(a)a.innerHTML='';initChat();}
+function qp(t){const i=document.getElementById('cinp');if(i){i.value=t;send();}}
+async function send(){
+  const i=document.getElementById('cinp');const t=i.value.trim();
+  if(!t||aiOn)return;i.value='';
+  const ch=document.getElementById('pchips');if(ch)ch.style.display='none';
+  addMsg(t,'me');aiOn=true;const ty=addTyp();
+  const sys=`You are WanderAI, an expert AI travel planner. Create detailed personalised itineraries with REAL 2026 prices. Always include:
+- Day-by-day breakdown with morning/afternoon/evening activities
 - Specific hotel/accommodation recommendations with price ranges in USD
-- Restaurant recommendations with price ranges  
-- Transport options and costs
-- Activity costs and booking tips
+- Restaurant recommendations with price ranges
+- Transport options and costs (flights, local transport)
+- Activity/entrance costs
 - Budget summary at the end
-- Practical tips (visa, currency, best time)
-User: ${currentUser.name}, home currency: ${currentUser.currency||'USD'}
-Be specific, helpful and enthusiastic. Use emojis to make responses engaging.`;
-  const msgs=[{role:'system',content:sys},...chatHistory.slice(-14).filter(m=>m.role!=='system')];
+- Practical tips (visa, best areas to stay, local customs)
+User: ${CU?.name||'Traveller'}, home currency: ${CU?.cur||'USD'}. Be enthusiastic, specific and use emojis to make it engaging.`;
+  const msgs=[{role:'system',content:sys},...chatH.slice(-14).filter(m=>m.role!=='system')];
   try{
-    const res=await fetch('https://api.groq.com/openai/v1/chat/completions',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+GROQ_KEY},
-      body:JSON.stringify({model:'llama-3.3-70b-versatile',max_tokens:1000,temperature:0.75,messages:msgs})
-    });
-    const data=await res.json();
-    typing.remove();
-    const reply=data?.choices?.[0]?.message?.content||'I couldn\'t connect right now. Please try again!';
-    addMsg(reply,'ai');
-  }catch(e){
-    typing.remove();
-    addMsg('Connection issue — please check your internet and try again! 🌐','ai');
-  }
-  aiTyping=false;
+    const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+GK},body:JSON.stringify({model:'llama-3.3-70b-versatile',max_tokens:1200,temperature:0.75,messages:msgs})});
+    const data=await r.json();ty.remove();
+    addMsg(data?.choices?.[0]?.message?.content||'Connection issue. Please try again!','ai');
+  }catch(e){ty.remove();addMsg('Connection issue — please check your internet and try again! 🌐','ai');}
+  aiOn=false;
 }
 
-/* ══════════════════════════════════════════════
-   TRIPS
-══════════════════════════════════════════════ */
+/* TRIPS */
 function renderTrips(){
-  const el=document.getElementById('trips-list');
-  const ct=document.getElementById('trips-count');
-  if(!el)return;
+  const el=document.getElementById('tlist');const ct=document.getElementById('tcnt');if(!el)return;
   ct.textContent=trips.length+' trip'+(trips.length!==1?'s':'')+' planned';
   if(!trips.length){
-    el.innerHTML=`<div style="text-align:center;padding:48px 24px;color:var(--text3)">
-      <div style="font-size:48px;margin-bottom:12px">🗺️</div>
-      <p style="font-size:16px;font-weight:500;color:var(--text2);margin-bottom:6px">No trips yet</p>
-      <p style="font-size:13px">Create your first trip or discover a destination!</p>
-    </div>`;
+    el.innerHTML='<div style="text-align:center;padding:48px 20px;color:var(--t3)"><div style="font-size:52px;margin-bottom:12px">🗺️</div><p style="font-size:17px;font-weight:700;color:var(--t2);margin-bottom:6px;font-family:var(--ffs)">No trips yet</p><p style="font-size:13px">Create your first trip or tap a destination card!</p></div>';
     return;
   }
   el.innerHTML=trips.map(t=>{
-    const spent=expenses.filter(e=>e.tripId===t.id).reduce((s,e)=>s+e.amount,0);
-    const pct=t.budget?Math.min(100,Math.round(spent/t.budget*100)):0;
-    const days=t.start&&t.end?Math.ceil((new Date(t.end)-new Date(t.start))/(86400000)):null;
-    return `<div class="trip-card" onclick="selectTrip('${t.id}')">
-      <div class="row" style="justify-content:space-between;margin-bottom:8px">
+    const sp=exps.filter(e=>e.tid===t.id).reduce((s,e)=>s+e.amount,0);
+    const pct=t.bud?Math.min(100,Math.round(sp/t.bud*100)):0;
+    const days=t.s&&t.e?Math.ceil((new Date(t.e)-new Date(t.s))/86400000):null;
+    return `<div class="tc" onclick="selTrip('${t.id}')">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px;align-items:flex-start">
         <div style="flex:1;min-width:0">
-          <p style="font-size:15px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${t.name}</p>
-          <p style="font-size:12px;color:var(--text3);margin-top:2px">${t.dest}${days?' · '+days+' days':''}</p>
+          <p style="font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--t1)">${t.name}</p>
+          <p style="font-size:12px;color:var(--t3);margin-top:2px">${t.dest}${days?' · '+days+' days':''}</p>
         </div>
-        <div style="text-align:right;flex-shrink:0">
-          <p style="font-size:14px;font-weight:500;color:var(--forest)">$${spent.toFixed(0)}</p>
-          <p style="font-size:10px;color:var(--text3)">of $${t.budget||'—'}</p>
+        <div style="text-align:right;flex-shrink:0;margin-left:10px">
+          <p style="font-size:16px;font-weight:700;color:var(--forest)">$${sp.toFixed(0)}</p>
+          <p style="font-size:10px;color:var(--t4)">of $${t.bud||'—'}</p>
         </div>
       </div>
-      <div class="pb" style="margin-bottom:4px"><div class="pf" style="width:${pct}%;background:${pct>90?'#c0392b':pct>70?'#e67e22':'var(--forest)'}"></div></div>
-      <div class="row" style="justify-content:space-between">
-        <span class="pill ${t.status==='active'?'pill-forest':'pill-gold'}" style="font-size:10px">${t.status||'planned'}</span>
-        <span style="font-size:11px;color:var(--text3)">${t.style||''}</span>
+      <div class="pb"><div class="pf" style="width:${pct}%;background:${pct>90?'#c0392b':pct>70?'#e67e22':'var(--forest)'}"></div></div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span class="pill ${t.active?'pg':'pgold'}" style="font-size:10px">${t.active?'Active':'Planned'}</span>
+        <span style="font-size:11px;color:var(--t4)">${t.style||''}</span>
       </div>
     </div>`;
   }).join('');
 }
-
-function showNewTrip(){document.getElementById('trip-modal').classList.add('open')}
-function closeNewTrip(){document.getElementById('trip-modal').classList.remove('open')}
-
+function openNT(){document.getElementById('m-nt').classList.add('open');}
+function closeNT(){document.getElementById('m-nt').classList.remove('open');}
 function createTrip(){
-  const name=document.getElementById('nt-name').value.trim();
-  const dest=document.getElementById('nt-dest').value.trim();
-  const err=document.getElementById('nt-err');
-  if(!name||!dest){err.textContent='Please enter trip name and destination.';return}
-  const trip={
-    id:'t'+Date.now(),name,dest,
-    start:document.getElementById('nt-start').value,
-    end:document.getElementById('nt-end').value,
-    budget:parseFloat(document.getElementById('nt-budget').value)||0,
-    style:document.getElementById('nt-style').value,
-    pax:document.getElementById('nt-pax').value,
-    status:'planned',created:Date.now()
-  };
-  trips.unshift(trip);
-  saveNow();
-  closeNewTrip();
-  ['nt-name','nt-dest','nt-start','nt-end','nt-budget'].forEach(id=>{document.getElementById(id).value='';});
-  err.textContent='';
-  renderTrips();
-  toast('Trip created! ✈️');
+  const n=document.getElementById('nt-n').value.trim();
+  const d=document.getElementById('nt-d').value.trim();
+  const err=document.getElementById('nterr');
+  if(!n||!d){err.textContent='Please enter trip name and destination.';return}
+  trips.unshift({id:'t'+Date.now(),name:n,dest:d,s:document.getElementById('nt-s').value,e:document.getElementById('nt-e').value,bud:parseFloat(document.getElementById('nt-b').value)||0,style:document.getElementById('nt-st').value,active:false,created:Date.now()});
+  saveData();closeNT();
+  ['nt-n','nt-d','nt-s','nt-e','nt-b'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  err.textContent='';renderTrips();toast('Trip created! ✈️');
 }
-
-function selectTrip(id){
-  const t=trips.find(x=>x.id===id);
-  if(!t)return;
-  // Switch to budget tab and filter to this trip
-  document.getElementById('budget-trip-name').textContent=t.name+' · '+t.dest;
+function selTrip(id){
+  const t=trips.find(x=>x.id===id);if(!t)return;
+  trips.forEach(x=>x.active=x.id===id);
+  saveData();
+  document.getElementById('btn-n').textContent=t.name+' · '+t.dest;
+  document.getElementById('cdest').textContent=t.dest;
   renderBudgetForTrip(t);
-  sw('budget',document.querySelectorAll('.nb')[4]);
-  updateCompDest(t.dest);
+  sw('bud',document.querySelectorAll('.nb')[4]);
 }
 
-/* ══════════════════════════════════════════════
-   COMPANION
-══════════════════════════════════════════════ */
-let compHistory=[];
-let compTyping=false;
-
-function renderCompanion(){
-  const activeTrip=trips.find(t=>t.status==='active')||trips[0];
-  if(activeTrip)updateCompDest(activeTrip.dest);
-}
-
-function updateCompDest(dest){
-  const el=document.getElementById('comp-dest');
-  if(el)el.textContent=dest||'Set in your active trip';
-}
-
-async function callCompAI(prompt){
-  const dest=document.getElementById('comp-dest').textContent;
-  const sys=`You are WanderAI Travel Companion — a real-time travel assistant. Current destination: ${dest}. Provide practical, specific, helpful advice. Be concise (3-5 sentences max). Use emojis. Focus on safety, local tips, practical info.`;
+/* COMPANION */
+function renderComp(){const at=trips.find(t=>t.active)||trips[0];if(at)document.getElementById('cdest').textContent=at.dest;}
+async function callCo(p){
+  const dest=document.getElementById('cdest').textContent||'your destination';
   try{
-    const res=await fetch('https://api.groq.com/openai/v1/chat/completions',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+GROQ_KEY},
-      body:JSON.stringify({model:'llama-3.3-70b-versatile',max_tokens:300,temperature:0.7,messages:[{role:'system',content:sys},{role:'user',content:prompt}]})
-    });
-    const data=await res.json();
-    return data?.choices?.[0]?.message?.content||'Could not get info right now. Please try again.';
-  }catch(e){return'Connection issue. Please check your internet.';}
+    const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+GK},body:JSON.stringify({model:'llama-3.3-70b-versatile',max_tokens:220,temperature:0.7,messages:[{role:'system',content:'You are WanderAI Travel Companion. Current destination: '+dest+'. Be concise (3-4 sentences), practical and use 1-2 emojis.'},{role:'user',content:p}]})});
+    const d=await r.json();return d?.choices?.[0]?.message?.content||'Could not get info. Try again.';
+  }catch{return'Connection issue. Check your internet.';}
+}
+function addCo(t,r){
+  const a=document.getElementById('coc');if(!a)return;
+  const d=document.createElement('div');d.className='msg m'+r;d.style.fontSize='13px';d.textContent=t;
+  a.appendChild(d);a.scrollTop=a.scrollHeight;
+}
+async function sendCo(){
+  const i=document.getElementById('copinp');const t=i.value.trim();
+  if(!t||coOn)return;i.value='';
+  addCo(t,'me');coOn=true;
+  const r=await callCo(t);addCo(r,'ai');coOn=false;
+}
+async function getW(){toast('Getting weather…');const r=await callCo('What is the typical weather now and what should I pack?');addCo('🌤 '+r,'ai');sw('comp',document.querySelectorAll('.nb')[3]);}
+async function getSf(){toast('Getting safety info…');const r=await callCo('Key safety tips and things tourists should watch out for?');addCo('🛡 '+r,'ai');sw('comp',document.querySelectorAll('.nb')[3]);}
+async function getTp(){toast('Getting local tips…');const r=await callCo('Top 3 insider local tips most tourists never discover?');addCo('💡 '+r,'ai');sw('comp',document.querySelectorAll('.nb')[3]);}
+async function ph(p){
+  toast('Translating…');
+  const dest=document.getElementById('cdest').textContent;
+  const r=await callCo('Translate "'+p+'" to the local language in '+dest+' with pronunciation guide and context.');
+  addCo(r,'ai');sw('comp',document.querySelectorAll('.nb')[3]);
 }
 
-function addCompMsg(text,role){
-  const area=document.getElementById('comp-chat');
-  if(!area)return;
-  const d=document.createElement('div');
-  d.className='msg msg-'+role;
-  d.style.fontSize='12px';
-  d.textContent=text;
-  area.appendChild(d);
-  area.scrollTop=area.scrollHeight;
-}
-
-async function sendCompMsg(){
-  const inp=document.getElementById('comp-inp');
-  const text=inp.value.trim();
-  if(!text||compTyping)return;
-  inp.value='';
-  addCompMsg(text,'user');
-  compTyping=true;
-  const reply=await callCompAI(text);
-  addCompMsg(reply,'ai');
-  compTyping=false;
-}
-
-async function getWeather(){
-  toast('Getting weather info…');
-  const reply=await callCompAI('What is the typical weather right now and what should I pack?');
-  addCompMsg('☁️ Weather: '+reply,'ai');
-}
-async function getSafety(){
-  toast('Getting safety info…');
-  const reply=await callCompAI('What are the key safety tips and things to watch out for as a tourist?');
-  addCompMsg('🛡️ Safety: '+reply,'ai');
-}
-async function getLocalTips(){
-  toast('Getting local tips…');
-  const reply=await callCompAI('What are the top 3 insider local tips that most tourists don\'t know?');
-  addCompMsg('💡 Local tips: '+reply,'ai');
-}
-async function getPhrase(phrase){
-  toast('Getting translation…');
-  const dest=document.getElementById('comp-dest').textContent;
-  const reply=await callCompAI('Translate "'+phrase+'" to the local language in '+dest+'. Show pronunciation guide.');
-  addCompMsg('🗣️ '+reply,'ai');
-}
-
-/* ══════════════════════════════════════════════
-   BUDGET
-══════════════════════════════════════════════ */
-let activeBudgetTrip=null;
-
+/* BUDGET */
 function renderBudget(){
-  const t=trips[0]||null;
-  if(t)renderBudgetForTrip(t);
-  else renderBudgetForTrip(null);
-  // Populate expense trip selector
-  const sel=document.getElementById('exp-trip');
-  if(sel){
-    sel.innerHTML=trips.length
-      ?trips.map(t=>`<option value="${t.id}">${t.name}</option>`).join('')
-      :'<option value="">No trips yet</option>';
-  }
+  const t=trips.find(x=>x.active)||trips[0]||null;
+  if(t){document.getElementById('btn-n').textContent=t.name+' · '+t.dest;renderBudgetForTrip(t);}
+  const sel=document.getElementById('ex-t');
+  if(sel)sel.innerHTML=trips.length?trips.map(t=>`<option value="${t.id}">${t.name}</option>`).join(''):'<option value="">No trips yet</option>';
 }
-
 function renderBudgetForTrip(trip){
-  activeBudgetTrip=trip;
-  const tripExpenses=trip?expenses.filter(e=>e.tripId===trip.id):expenses;
-  const total=trip?.budget||0;
-  const spent=tripExpenses.reduce((s,e)=>s+e.amount,0);
+  const te=trip?exps.filter(e=>e.tid===trip.id):[];
+  const total=trip?.bud||0,spent=te.reduce((s,e)=>s+e.amount,0);
   const pct=total?Math.min(100,Math.round(spent/total*100)):0;
-  const remain=total-spent;
-  document.getElementById('bud-total').textContent='$'+total.toLocaleString();
-  document.getElementById('bud-spent').textContent='$'+spent.toFixed(2);
-  document.getElementById('bud-bar').style.width=pct+'%';
-  document.getElementById('bud-bar').style.background=pct>90?'#c0392b':pct>70?'#e67e22':'var(--gold)';
-  document.getElementById('bud-pct').textContent=pct+'% used';
-  document.getElementById('bud-remain').textContent='$'+Math.max(0,remain).toFixed(2)+' remaining';
-  // Category breakdown
-  const cats={};
-  tripExpenses.forEach(e=>{cats[e.cat]=(cats[e.cat]||0)+e.amount});
-  const catsEl=document.getElementById('bud-cats');
-  if(catsEl){
-    catsEl.innerHTML=Object.keys(cats).length?Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([cat,amt])=>{
-      const catPct=spent?Math.round(amt/spent*100):0;
-      return `<div class="budget-cat">
-        <div class="cat-icon" style="background:var(--sand2)">${CATEGORY_EMOJIS[cat]||'📌'}</div>
-        <div style="flex:1">
-          <div class="row" style="justify-content:space-between;margin-bottom:4px">
-            <span style="font-size:13px;font-weight:500;text-transform:capitalize">${cat}</span>
-            <span style="font-size:13px;color:var(--forest);font-weight:500">$${amt.toFixed(2)}</span>
-          </div>
-          <div class="pb"><div class="pf" style="width:${catPct}%"></div></div>
-        </div>
-      </div>`;
-    }).join(''):'<p style="text-align:center;color:var(--text3);padding:16px;font-size:13px">No expenses yet</p>';
-  }
-  // Expense list
-  const listEl=document.getElementById('bud-list');
-  if(listEl){
-    listEl.innerHTML=tripExpenses.length?[...tripExpenses].reverse().slice(0,20).map(e=>`
-      <div class="row gap12" style="padding:10px 0;border-bottom:0.5px solid var(--sand2)">
-        <span style="font-size:20px">${CATEGORY_EMOJIS[e.cat]||'📌'}</span>
-        <div style="flex:1">
-          <p style="font-size:13px;font-weight:500">${e.desc}</p>
-          <p style="font-size:11px;color:var(--text3)">${e.cat} · ${new Date(e.date).toLocaleDateString()}</p>
-        </div>
-        <p style="font-size:14px;font-weight:500;color:var(--forest)">$${e.amount.toFixed(2)}</p>
-      </div>`).join('')+'<div style="height:2px"></div>'
-      :'<p style="text-align:center;color:var(--text3);padding:16px;font-size:13px">No expenses yet. Add your first!</p>';
-  }
-  // AI insight
-  if(tripExpenses.length>2)getBudgetInsight(trip,spent,total,cats);
+  document.getElementById('bht').textContent='$'+total.toLocaleString();
+  document.getElementById('bhs').textContent='$'+spent.toFixed(2);
+  document.getElementById('bhb').style.width=pct+'%';
+  document.getElementById('bhb').style.background=pct>90?'#e74c3c':pct>70?'#e67e22':'var(--gl)';
+  document.getElementById('bhp').textContent=pct+'% used';
+  document.getElementById('bhr').textContent='$'+Math.max(0,total-spent).toFixed(2)+' remaining';
+  const cats={};te.forEach(e=>{cats[e.cat]=(cats[e.cat]||0)+e.amount;});
+  document.getElementById('bcats').innerHTML=Object.keys(cats).length?Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([cat,amt])=>{
+    const p=spent?Math.round(amt/spent*100):0;
+    return `<div class="er"><div class="catdot" style="background:${CATBG[cat]||'#f5f5f5'}">${CATC[cat]||'📌'}</div><div style="flex:1"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="font-size:13px;font-weight:600;text-transform:capitalize;color:var(--t1)">${cat}</span><span style="font-size:13px;font-weight:700;color:var(--forest)">$${amt.toFixed(2)}</span></div><div class="pb" style="margin:0"><div class="pf" style="width:${p}%"></div></div></div></div>`;
+  }).join(''):'<p style="text-align:center;color:var(--t3);padding:14px;font-size:13px">No expenses yet</p>';
+  document.getElementById('blist').innerHTML=te.length?[...te].reverse().slice(0,15).map(e=>`
+    <div class="er"><span style="font-size:20px">${CATC[e.cat]||'📌'}</span><div style="flex:1"><p style="font-size:13px;font-weight:500;color:var(--t1)">${e.desc}</p><p style="font-size:11px;color:var(--t3)">${e.cat} · ${new Date(e.date).toLocaleDateString()}</p></div><p style="font-size:14px;font-weight:700;color:var(--forest)">$${e.amount.toFixed(2)}</p></div>`).join(''):'<p style="text-align:center;color:var(--t3);padding:14px;font-size:13px">No expenses yet. Add your first!</p>';
+  if(te.length>1)getBudIns(trip,spent,total,cats);
 }
-
-async function getBudgetInsight(trip,spent,total,cats){
-  const topCat=Object.entries(cats).sort((a,b)=>b[1]-a[1])[0];
-  const prompt=`Trip to ${trip?.dest||'unknown'}. Budget: $${total}. Spent: $${spent.toFixed(2)}. Top spending category: ${topCat?topCat[0]+' ($'+topCat[1].toFixed(2)+')':'none'}. Give one specific money-saving tip in 2 sentences.`;
+async function getBudIns(trip,spent,total,cats){
+  const top=Object.entries(cats).sort((a,b)=>b[1]-a[1])[0];
   try{
-    const res=await fetch('https://api.groq.com/openai/v1/chat/completions',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+GROQ_KEY},
-      body:JSON.stringify({model:'llama-3.3-70b-versatile',max_tokens:100,temperature:0.7,messages:[{role:'user',content:prompt}]})
-    });
-    const data=await res.json();
-    const tip=data?.choices?.[0]?.message?.content;
-    if(tip){const el=document.getElementById('budget-insight');if(el)el.textContent=tip;}
-  }catch(e){}
+    const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+GK},body:JSON.stringify({model:'llama-3.3-70b-versatile',max_tokens:80,temperature:0.7,messages:[{role:'user',content:'Trip: '+trip?.dest+'. Budget $'+total+'. Spent $'+spent.toFixed(2)+'. Top spending: '+(top?top[0]+' $'+top[1].toFixed(2):'none')+'. Give ONE specific 1-sentence money-saving tip.'}]})});
+    const d=await r.json();const tip=d?.choices?.[0]?.message?.content;
+    if(tip){const el=document.getElementById('bins');if(el)el.textContent=tip;}
+  }catch{}
 }
-
-function showAddExpense(){document.getElementById('exp-modal').classList.add('open')}
-function closeAddExpense(){document.getElementById('exp-modal').classList.remove('open')}
-
-function addExpense(){
-  const desc=document.getElementById('exp-desc').value.trim();
-  const amount=parseFloat(document.getElementById('exp-amount').value);
-  const cat=document.getElementById('exp-cat').value;
-  const tripId=document.getElementById('exp-trip').value;
-  if(!desc||!amount){toast('Please fill description and amount');return}
-  const exp={id:'e'+Date.now(),desc,amount,cat,tripId,date:Date.now()};
-  expenses.push(exp);
-  saveNow();
-  closeAddExpense();
-  document.getElementById('exp-desc').value='';
-  document.getElementById('exp-amount').value='';
-  const t=trips.find(x=>x.id===tripId);
-  if(t)renderBudgetForTrip(t);
+function openExp(){
+  const sel=document.getElementById('ex-t');
+  if(sel)sel.innerHTML=trips.length?trips.map(t=>`<option value="${t.id}">${t.name}</option>`).join(''):'<option value="">No trips yet</option>';
+  document.getElementById('m-exp').classList.add('open');
+}
+function closeExp(){document.getElementById('m-exp').classList.remove('open');}
+function addExp(){
+  const desc=document.getElementById('ex-d').value.trim();
+  const amt=parseFloat(document.getElementById('ex-a').value);
+  const cat=document.getElementById('ex-c').value;
+  const tid=document.getElementById('ex-t').value;
+  if(!desc||!amt){toast('Enter description and amount');return}
+  exps.push({id:'e'+Date.now(),desc,amount:amt,cat,tid,date:Date.now()});
+  saveData();closeExp();
+  document.getElementById('ex-d').value='';document.getElementById('ex-a').value='';
+  const t=trips.find(x=>x.id===tid);
+  if(t){document.getElementById('btn-n').textContent=t.name+' · '+t.dest;renderBudgetForTrip(t);}
   else renderBudget();
   toast('Expense added! 💰');
 }
 
-/* ══════════════════════════════════════════════
-   PROFILE
-══════════════════════════════════════════════ */
-function openProfile(){
-  const init=currentUser.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
-  document.getElementById('prof-avatar').textContent=init;
-  document.getElementById('prof-name').textContent=currentUser.name;
-  document.getElementById('prof-email').textContent=currentUser.email;
-  document.getElementById('edit-name').value=currentUser.name;
-  document.getElementById('edit-currency').value=currentUser.currency||'USD';
+/* PROFILE */
+function openProf(){
+  const init=CU.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('pav').textContent=init;
+  document.getElementById('pnm').textContent=CU.name;
+  document.getElementById('pem').textContent=CU.email;
+  document.getElementById('e-n').value=CU.name;
+  document.getElementById('e-c').value=CU.cur||'USD';
   const isDark=document.body.classList.contains('dark');
-  const btn=document.getElementById('dark-btn');
-  if(btn)btn.innerHTML=isDark?'<i class="ti ti-sun" style="font-size:14px"></i> Light':'<i class="ti ti-moon" style="font-size:14px"></i> Dark';
-  document.getElementById('profile-modal').classList.add('open');
+  const btn=document.getElementById('dbtn');
+  if(btn)btn.innerHTML=isDark?'<i class="ti ti-sun" style="font-size:13px"></i> Light':'<i class="ti ti-moon" style="font-size:13px"></i> Dark';
+  document.getElementById('m-prof').classList.add('open');
 }
-function closeProfile(){document.getElementById('profile-modal').classList.remove('open')}
-
-function saveProfile(){
-  const name=document.getElementById('edit-name').value.trim();
-  const currency=document.getElementById('edit-currency').value;
-  if(!name)return;
-  currentUser.name=name;
-  currentUser.currency=currency;
-  const acc=getAccounts();
-  if(acc[currentUser.email]){acc[currentUser.email].name=name;acc[currentUser.email].currency=currency;}
-  saveAccounts(acc);
-  S.set('session',currentUser);
-  document.getElementById('home-name').textContent=name;
-  document.getElementById('home-avatar').textContent=name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
-  closeProfile();
-  toast('Profile saved ✓');
+function closeProf(){document.getElementById('m-prof').classList.remove('open');}
+function saveProf(){
+  const n=document.getElementById('e-n').value.trim();
+  const c=document.getElementById('e-c').value;
+  if(!n)return;
+  CU.name=n;CU.cur=c;
+  const a=getAcc();if(a[CU.email]){a[CU.email].name=n;a[CU.email].cur=c;}
+  saveAcc(a);S.set('sess',CU);
+  const hn=document.getElementById('hname'),ha=document.getElementById('hav');
+  if(hn)hn.textContent=n;
+  if(ha)ha.textContent=n.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  closeProf();toast('Profile saved ✓');
 }
-
+function applyDark(on){document.body.classList.toggle('dark',on);}
 function toggleDark(){
-  const isDark=document.body.classList.toggle('dark');
-  S.set('dark_mode',isDark);
-  const btn=document.getElementById('dark-btn');
-  if(btn)btn.innerHTML=isDark?'<i class="ti ti-sun" style="font-size:14px"></i> Light':'<i class="ti ti-moon" style="font-size:14px"></i> Dark';
+  const d=!S.get('dark');S.set('dark',d);applyDark(d);
+  const btn=document.getElementById('dbtn');
+  if(btn)btn.innerHTML=d?'<i class="ti ti-sun" style="font-size:13px"></i> Light':'<i class="ti ti-moon" style="font-size:13px"></i> Dark';
 }
 
-/* ══════════════════════════════════════════════
-   TOAST
-══════════════════════════════════════════════ */
+/* TOAST */
 function toast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;
-  t.classList.add('show');
+  const t=document.getElementById('toast');if(!t)return;
+  t.textContent=msg;t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),2500);
 }
 
-/* ══════════════════════════════════════════════
-   PWA
-══════════════════════════════════════════════ */
-let deferredInstall=null;
-function isIOS(){return /iphone|ipad|ipod/i.test(navigator.userAgent)}
-function isStandalone(){return window.matchMedia('(display-mode:standalone)').matches||window.navigator.standalone}
+/* PWA */
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{}));
 
-window.addEventListener('beforeinstallprompt',e=>{
-  e.preventDefault();deferredInstall=e;
-  if(!S.get('install_dismissed')&&!isStandalone())showInstallBanner();
-});
-
-function checkInstall(){
-  if(isIOS()&&!isStandalone()&&!S.get('install_dismissed')){
-    document.getElementById('ib-text').textContent='Install: tap Share → Add to Home Screen';
-    document.getElementById('install-banner').querySelector('.ib-do').textContent='Got it';
-    document.getElementById('install-banner').querySelector('.ib-do').onclick=dismissInstall;
-    showInstallBanner();
-  }
-}
-function showInstallBanner(){document.getElementById('install-banner').classList.remove('hide')}
-function doInstall(){if(deferredInstall){deferredInstall.prompt();deferredInstall.userChoice.then(()=>{deferredInstall=null;dismissInstall()})}}
-function dismissInstall(){document.getElementById('install-banner').classList.add('hide');S.set('install_dismissed',true)}
-
-/* ══════════════════════════════════════════════
-   SERVICE WORKER
-══════════════════════════════════════════════ */
-if('serviceWorker' in navigator){
-  window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{}));
-}
-
-/* ══════════════════════════════════════════════
-   BOOT
-══════════════════════════════════════════════ */
-if(checkSession()){
-  document.getElementById('auth').classList.add('hide');
-  document.getElementById('app').classList.remove('hide');
-  if(S.get('dark_mode'))document.body.classList.add('dark');
-  initApp();
+/* BOOT */
+if(checkSess()){
+  document.getElementById('auth').classList.add('gone');
+  if(S.get('dark'))applyDark(true);
+  loadData();
+  const hn=document.getElementById('hname'),ha=document.getElementById('hav');
+  if(hn&&CU)hn.textContent=CU.name;
+  if(ha&&CU)ha.textContent=CU.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  renderHome();initChat();renderTrips();renderBudget();
 }
 </script>
 </body>
